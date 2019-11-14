@@ -48,11 +48,4 @@ VERSION
 /mscore/data/mscore.aps
 /msvc.*
 
-*.o
-*.dylib
-moc_*.cpp
-moc_*.h
-*.plist
-*.dSYM
-*.app
-.qmake.stash
+build.web

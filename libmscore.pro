@@ -1,18 +1,15 @@
-TEMPLATE = lib
-
 CONFIG += debug
 
 CONFIG += precompiled_header
 PRECOMPILED_HEADER = all.h
 
-#QT += svg declarative
 QT += gui xml xmlpatterns widgets concurrent svg qml quick quickwidgets help
 
 LIBS += -L/usr/local/lib -lfreetype -lz
 
 INCLUDEPATH += ./libmscore ./thirdparty/freetype/include
 
-QMAKE_CXXFLAGS += -include all.h -fsigned-char -ffast-math -std=c++11 -stdlib=libc++ -O2
+QMAKE_CXXFLAGS += -include $$_PRO_FILE_PWD_/all.h -fsigned-char -ffast-math -std=c++11 -stdlib=libc++ -O2
 #RESOURCES += libmscore.qrc
 
 SOURCES = \
@@ -185,7 +182,6 @@ SOURCES = \
       libmscore/layoutlinear.cpp \
       thirdparty/qzip/qzip.cpp \
       libmscore/stafftypechange.cpp \
-      libmscore/web.cpp \
 
 HEADERS += \
     libmscore/ledgerline.h \
@@ -349,3 +345,10 @@ HEADERS += \
     libmscore/velo.h                    \
     libmscore/volta.h                   \
     libmscore/xml.h                     \
+
+SOURCES += \
+    web/web.cpp \
+    web/scoreeditorwindow.cpp \
+
+HEADERS +=
+    web/scoreeditorwindow.h \
