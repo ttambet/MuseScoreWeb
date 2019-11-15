@@ -3,7 +3,7 @@
 
 #include <QtGui>
 
-class ScoreEditorWindow : public QWindow
+class ScoreEditorWindow : public QMainWindow
 {
 public:
     ScoreEditorWindow();

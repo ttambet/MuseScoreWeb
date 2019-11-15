@@ -1,21 +1,59 @@
 #include <QtGui>
 #include "scoreeditorwindow.h"
 #include "libmscore/score.h"
+#include "libmscore/sym.h"
+#include "preferences.h"
+#include "musescore.h"
+#include "mscore/shortcut.h"
+#include "mscore/workspace.h"
 
 // namespace Ms {
 //     QString revision = "123456";
 // }
 
+namespace Ms {
+    extern QString iconPath;
+}
+
 using namespace Ms;
 
 int main2(int argc, char **argv)
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     MScore::init();
-    
-    MasterScore* score = new MasterScore(MScore::baseStyle());
-    QString name = ":/data/My_First_Score.mscx";
-    Score::FileError rv = score->loadMsc(name, false);
+    preferences.init();
+    // if (useFactorySettings)
+    //         localeName = "system";
+    //   else {
+    //         QSettings s;
+    //         localeName = s.value(PREF_UI_APP_LANGUAGE, "system").toString();
+    //         }
+
+    //   setMscoreLocale(localeName);
+    MuseScore::updateUiStyleAndTheme();
+    iconPath = QString(":/data/icons/");
+    Shortcut::init();
+    mscore = new MuseScore();
+    WorkspacesManager::initCurrentWorkspace();
+    gscore = new MasterScore();
+      gscore->setPaletteMode(true);
+      gscore->setMovements(new Movements());
+      gscore->setStyle(MScore::baseStyle());
+gscore->style().set(Sid::MusicalTextFont, QString("Bravura Text"));
+      ScoreFont* scoreFont = ScoreFont::fontFactory("Bravura");
+      gscore->setScoreFont(scoreFont);
+      gscore->setNoteHeadWidth(scoreFont->width(SymId::noteheadBlack, gscore->spatium()) / SPATIUM20);
+
+      //read languages list
+      mscore->readLanguages(mscoreGlobalShare + "locale/languages.xml");
+      QApplication::instance()->installEventFilter(mscore);
+    //   mscore->setRevision(Ms::revision);
+            mscore->readSettings();
+            QObject::connect(qApp, SIGNAL(messageReceived(const QString&)),
+               mscore, SLOT(handleMessage(const QString&)));
+
+            static_cast<QtSingleApplication*>(qApp)->setActivationWindow(mscore, false);
+
     // Score::FileError rv = Ms::readScore(score, name, false);
     // ScoreView* currentScoreView = mscore->appendScore(score);
     // MasterScore* score = readScore(a);
