@@ -11,7 +11,7 @@
 //=============================================================================
 
 #include <fenv.h>
-#include "network/loginmanager.h"
+// #include "network/loginmanager.h"
 #include "uploadscoredialog.h"
 #include <QStyleFactory>
 #include "config.h"
@@ -84,7 +84,7 @@
 #include "plugin/pluginManager.h"
 #include "plugin/qmlpluginengine.h"
 #endif
-#include "helpBrowser.h"
+// #include "helpBrowser.h"
 #include "drumtools.h"
 #include "editstafftype.h"
 #include "texttools.h"
@@ -1030,8 +1030,8 @@ MuseScore::MuseScore()
       setWindowTitle(QString(MUSESCORE_NAME_VERSION));
       setIconSize(QSize(preferences.getInt(PREF_UI_THEME_ICONWIDTH) * guiScaling, preferences.getInt(PREF_UI_THEME_ICONHEIGHT) * guiScaling));
 
-      ucheck = new UpdateChecker(this);
-      packUChecker = new ExtensionsUpdateChecker(this);
+      // ucheck = new UpdateChecker(this);
+      // packUChecker = new ExtensionsUpdateChecker(this);
 
       setAcceptDrops(true);
       setFocusPolicy(Qt::NoFocus);
@@ -1956,7 +1956,8 @@ MuseScore::MuseScore()
             Qt::ConnectionType(Qt::QueuedConnection | Qt::UniqueConnection));
 
       if (!converterMode && !pluginMode)
-            _loginManager = new LoginManager(getAction(saveOnlineMenuItem), this);
+            // _loginManager = new LoginManager(getAction(saveOnlineMenuItem), this);
+            {}
 
       connect(qApp, &QGuiApplication::focusWindowChanged, this, &MuseScore::onFocusWindowChanged);
       }
@@ -3982,10 +3983,10 @@ bool MuseScore::eventFilter(QObject *obj, QEvent *event)
 
 bool MuseScore::hasToCheckForUpdate()
       {
-      if (ucheck)
-            return ucheck->hasToCheck();
-      else
-            return false;
+      // if (ucheck)
+      //       return ucheck->hasToCheck();
+      // else
+      // return false;
       }
 
 //---------------------------------------------------------
@@ -3994,7 +3995,8 @@ bool MuseScore::hasToCheckForUpdate()
 
 bool MuseScore::hasToCheckForExtensionsUpdate()
       {
-      return packUChecker ? packUChecker->hasToCheck() : false;
+      // return packUChecker ? packUChecker->hasToCheck() : false;
+      return false;
       }
 
 //---------------------------------------------------------
@@ -4004,10 +4006,10 @@ bool MuseScore::hasToCheckForExtensionsUpdate()
 
 void MuseScore::checkForUpdatesNoUI()
       {
-      if (autoUpdater)
-            autoUpdater->checkUpdates();
-      else if (ucheck)
-            ucheck->check(version(), false);
+      // if (autoUpdater)
+      //       autoUpdater->checkUpdates();
+      // else if (ucheck)
+      //       ucheck->check(version(), false);
       }
 
 //---------------------------------------------------------
@@ -4016,10 +4018,10 @@ void MuseScore::checkForUpdatesNoUI()
 //---------------------------------------------------------
 void MuseScore::checkForUpdatesUI()
       {
-      if (autoUpdater)
-            autoUpdater->checkForUpdatesNow();
-      else if (ucheck)
-            ucheck->check(version(), true);
+      // if (autoUpdater)
+      //       autoUpdater->checkForUpdatesNow();
+      // else if (ucheck)
+      //       ucheck->check(version(), true);
       }
 
 //---------------------------------------------------------
@@ -4028,8 +4030,8 @@ void MuseScore::checkForUpdatesUI()
 
 void MuseScore::checkForExtensionsUpdate()
       {
-      if (packUChecker)
-            packUChecker->check();
+      // if (packUChecker)
+      //       packUChecker->check();
       }
 
 //---------------------------------------------------------
@@ -5505,6 +5507,7 @@ void MuseScore::switchPlayMode(int mode)
 
 void MuseScore::networkFinished()
       {
+            #ifdef WEBASSEMBLY_DISABLE
       QNetworkReply* reply = qobject_cast<QNetworkReply*>(QObject::sender());
       if (reply->error() != QNetworkReply::NoError) {
             qDebug("Error while checking update [%s]", qPrintable(reply->errorString()));
@@ -5545,6 +5548,7 @@ void MuseScore::networkFinished()
             }
       score->setCreated(true);
       setCurrentScoreView(appendScore(score));
+      #endif
       }
 
 //---------------------------------------------------------
@@ -5559,24 +5563,26 @@ void MuseScore::loadFile(const QString& s)
 
 void MuseScore::loadFile(const QUrl& url)
       {
+            #ifdef WEBASSEMBLY_DISABLE
       QEventLoop loop;
       QNetworkReply* nr = mscore->networkManager()->get(QNetworkRequest(url));
       connect(nr, SIGNAL(finished()), this,
                SLOT(networkFinished()));
       connect(nr, SIGNAL(finished()), &loop, SLOT(quit()));
       loop.exec();
+      #endif
       }
 
 //---------------------------------------------------------
 //   networkManager
 //---------------------------------------------------------
 
-QNetworkAccessManager* MuseScore::networkManager()
-      {
-      if (!_networkManager)
-            _networkManager = new QNetworkAccessManager(this);
-      return _networkManager;
-      }
+// QNetworkAccessManager* MuseScore::networkManager()
+//       {
+//       if (!_networkManager)
+//             _networkManager = new QNetworkAccessManager(this);
+//       return _networkManager;
+//       }
 
 //---------------------------------------------------------
 //   selectSimilar
@@ -7576,7 +7582,7 @@ int main(int argc, char* av[])
       Shortcut::init();
       preferences.init();
 
-      QNetworkProxyFactory::setUseSystemConfiguration(true);
+      // QNetworkProxyFactory::setUseSystemConfiguration(true);
 
       MScore::init();         // initialize libmscore
       updateExternalValuesFromPreferences();
