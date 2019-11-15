@@ -9,7 +9,7 @@ LIBS += -L/usr/local/lib -lfreetype -lz -lvorbis -lvorbisfile -framework Cocoa
 
 INCLUDEPATH += ./libmscore ./thirdparty/freetype/include ./mscore ./thirdparty /usr/local/include ./thirdparty/dtl
 
-QMAKE_CXXFLAGS += -include $$_PRO_FILE_PWD_/all.h -fsigned-char -ffast-math -std=c++11 -stdlib=libc++ 
+QMAKE_CXXFLAGS += -include $$_PRO_FILE_PWD_/all.h -fsigned-char -ffast-math -std=c++11 -stdlib=libc++ -Wno-inconsistent-missing-override
 RESOURCES += mscore/musescore.qrc mscore/qml.qrc mscore/musescorefonts-Mac.qrc effects/zita1/zita.qrc
 
 SOURCES = \
