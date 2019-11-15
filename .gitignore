@@ -49,3 +49,4 @@ VERSION
 /msvc.*
 
 build.web
+build.wasm
