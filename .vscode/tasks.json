@@ -3,14 +3,24 @@
         {
             "type": "shell",
             "label": "Build web",
-            "command": "qmake ../libmscore.pro && make -j8 2>&1 | tee build.log",
+            "command": "set -o pipefail; qmake ../libmscore.pro && make -j8 2>&1 | tee build.log",
             "options": {
                 "cwd": "${workspaceFolder}/build.web"
             },
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher":"$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "Build macOS",
+            "command": "make -j8 -f Makefile.osx release && make -j8 -f Makefile.osx install",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher":"$gcc"
         }
     ],
     "version": "2.0.0"

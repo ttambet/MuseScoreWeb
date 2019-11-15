@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug",
+            "name": "Debug web",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build.web/libmscore.app/Contents/MacOS/libmscore",
@@ -15,7 +15,21 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb",
-            "preLaunchTask": "Build web"
+            // "preLaunchTask": "Build web"
+        },
+        {
+            "name": "Debug macOS",
+            "type": "cppdbg",
+            "request": "launch",
+            // "program": "${workspaceFolder}/build.release/mscore/Release/mscore.app/Contents/MacOS/mscore",
+            "program": "${workspaceFolder}/applebuild/mscore.app/Contents/MacOS/mscore",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build.release",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            // "preLaunchTask": "Build macOS"
         }
     ]
 }
