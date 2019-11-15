@@ -16,7 +16,7 @@
 #include "libmscore/score.h"
 
 #define OV_EXCLUDE_STATIC_CALLBACKS
-#include <vorbis/vorbisfile.h>
+// #include <vorbis/vorbisfile.h>
 
 namespace Ms {
 
@@ -25,20 +25,20 @@ namespace Ms {
 //   VorbisData
 //---------------------------------------------------------
 
-struct VorbisData {
-      int pos;          // current position in audio->data()
-      QByteArray data;
-      };
+// struct VorbisData {
+//       int pos;          // current position in audio->data()
+//       QByteArray data;
+//       };
 
-static VorbisData vorbisData;
+// static VorbisData vorbisData;
 
 static size_t ovRead(void* ptr, size_t size, size_t nmemb, void* datasource);
-static int ovSeek(void* datasource, ogg_int64_t offset, int whence);
+// static int ovSeek(void* datasource, ogg_int64_t offset, int whence);
 static long ovTell(void* datasource);
 
-static ov_callbacks ovCallbacks = {
-      ovRead, ovSeek, 0, ovTell
-      };
+// static ov_callbacks ovCallbacks = {
+//       ovRead, ovSeek, 0, ovTell
+//       };
 
 //---------------------------------------------------------
 //   ovRead
@@ -46,6 +46,7 @@ static ov_callbacks ovCallbacks = {
 
 static size_t ovRead(void* ptr, size_t size, size_t nmemb, void* datasource)
       {
+#ifdef WEBASSEMBLY_DISABLE
       VorbisData* vd = (VorbisData*)datasource;
       size_t n = size * nmemb;
       if (vd->data.size() < int(vd->pos + n))
@@ -56,12 +57,15 @@ static size_t ovRead(void* ptr, size_t size, size_t nmemb, void* datasource)
             vd->pos += int(n);
             }
       return n;
+#endif
+      return 0;
       }
 
 //---------------------------------------------------------
 //   ovSeek
 //---------------------------------------------------------
 
+#ifdef WEBASSEMBLY_DISABLE
 static int ovSeek(void* datasource, ogg_int64_t offset, int whence)
       {
       VorbisData* vd = (VorbisData*)datasource;
@@ -78,6 +82,7 @@ static int ovSeek(void* datasource, ogg_int64_t offset, int whence)
             }
       return 0;
       }
+#endif
 
 //---------------------------------------------------------
 //   ovTell
@@ -85,8 +90,10 @@ static int ovSeek(void* datasource, ogg_int64_t offset, int whence)
 
 static long ovTell(void* datasource)
       {
+#ifdef WEBASSEMBLY_DISABLE
       VorbisData* vd = (VorbisData*)datasource;
       return vd->pos;
+#endif
       }
 
 
@@ -111,6 +118,7 @@ static const int WSCALE = 10;
 
 void WaveView::setAudio(Audio* audio)
       {
+#ifdef WEBASSEMBLY_DISABLE
       waves.clear();
       OggVorbis_File vf;
       vorbisData.pos  = 0;
@@ -153,6 +161,7 @@ void WaveView::setAudio(Audio* audio)
                   }
             waves.append((char*)dst, n);
             }
+#endif
       }
 
 //---------------------------------------------------------

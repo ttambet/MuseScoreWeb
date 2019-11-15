@@ -64,7 +64,7 @@ Seq* seq;
 static const int guiRefresh   = 10;       // Hz
 static const int peakHoldTime = 1400;     // msec
 static const int peakHold     = (peakHoldTime * guiRefresh) / 1000;
-static OggVorbis_File vf;
+// static OggVorbis_File vf;
 
 static constexpr int minUtickBufferSize = 480 * 4 * 10; // about 10 measures of 4/4 time signature
 
@@ -76,15 +76,15 @@ static const int AUDIO_BUFFER_SIZE = 1024 * 512;  // 2 MB
 //   VorbisData
 //---------------------------------------------------------
 
-struct VorbisData {
-      int pos;          // current position in audio->data()
-      QByteArray data;
-      };
+// struct VorbisData {
+//       int pos;          // current position in audio->data()
+//       QByteArray data;
+//       };
 
-static VorbisData vorbisData;
+// static VorbisData vorbisData;
 
 static size_t ovRead(void* ptr, size_t size, size_t nmemb, void* datasource);
-static int ovSeek(void* datasource, ogg_int64_t offset, int whence);
+// static int ovSeek(void* datasource, ogg_int64_t offset, int whence);
 static long ovTell(void* datasource);
 
 // static ov_callbacks ovCallbacks = {
@@ -97,6 +97,7 @@ static long ovTell(void* datasource);
 
 static size_t ovRead(void* ptr, size_t size, size_t nmemb, void* datasource)
       {
+#ifdef WEBASSEMBLY_DISABLE
       VorbisData* vd = (VorbisData*)datasource;
       size_t n = size * nmemb;
       if (vd->data.size() < int(vd->pos + n))
@@ -107,12 +108,14 @@ static size_t ovRead(void* ptr, size_t size, size_t nmemb, void* datasource)
             vd->pos += int(n);
             }
       return n;
+#endif
+      return 0;
       }
 
 //---------------------------------------------------------
 //   ovSeek
 //---------------------------------------------------------
-
+#ifdef WEBASSEMBLY_DISABLE
 static int ovSeek(void* datasource, ogg_int64_t offset, int whence)
       {
       VorbisData* vd = (VorbisData*)datasource;
@@ -129,6 +132,7 @@ static int ovSeek(void* datasource, ogg_int64_t offset, int whence)
             }
       return 0;
       }
+#endif
 
 //---------------------------------------------------------
 //   ovTell
@@ -136,8 +140,11 @@ static int ovSeek(void* datasource, ogg_int64_t offset, int whence)
 
 static long ovTell(void* datasource)
       {
+#ifdef WEBASSEMBLY_DISABLE
       VorbisData* vd = (VorbisData*)datasource;
       return vd->pos;
+#endif
+      return 0;
       }
 
 //---------------------------------------------------------
@@ -312,6 +319,7 @@ void Seq::start()
       allowBackgroundRendering = true;
       collectEvents(getPlayStartUtick());
       if (cs->playMode() == PlayMode::AUDIO) {
+#ifdef WEBASSEMBLY_DISABLE
             if (!oggInit) {
                   vorbisData.pos  = 0;
                   vorbisData.data = cs->audio()->data();
@@ -322,6 +330,7 @@ void Seq::start()
                         }
                   oggInit = true;
                   }
+#endif
             }
 
       if (!preferences.getBool(PREF_IO_JACK_USEJACKTRANSPORT) || (preferences.getBool(PREF_IO_JACK_USEJACKTRANSPORT) && state == Transport::STOP))
@@ -1166,7 +1175,7 @@ void Seq::seekCommon(int utick)
       collectEvents(utick);
 
       if (cs->playMode() == PlayMode::AUDIO) {
-            ogg_int64_t sp = cs->utick2utime(utick) * MScore::sampleRate;
+            // ogg_int64_t sp = cs->utick2utime(utick) * MScore::sampleRate;
             // ov_pcm_seek(&vf, sp);
             }
 

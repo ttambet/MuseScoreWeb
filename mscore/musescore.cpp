@@ -116,7 +116,7 @@
 #include "synthesizer/synthesizergui.h"
 #include "synthesizer/msynthesizer.h"
 #include "synthesizer/event.h"
-#include "fluid/fluid.h"
+// #include "fluid/fluid.h"
 #include "plugin/qmlplugin.h"
 #include "accessibletoolbutton.h"
 #include "toolbuttonmenu.h"
@@ -612,6 +612,7 @@ void MuseScore::onLongOperationFinished()
 
 bool MuseScore::importExtension(QString path)
       {
+#ifdef WEBASSEMBLY_DISABLE
       MQZipReader zipFile(path);
       // compute total unzipped size
       qint64 totalZipSize = 0;
@@ -822,6 +823,7 @@ bool MuseScore::importExtension(QString path)
                   changeWorkspace(WorkspacesManager::workspaces().last());
                   }
             }
+#endif
       return true;
       }
 
@@ -3859,6 +3861,8 @@ MasterSynthesizer* synthesizerFactory()
       {
       MasterSynthesizer* ms = new MasterSynthesizer();
 
+#ifdef WEBASSEMBLY_DISABLE
+
       FluidS::Fluid* fluid = new FluidS::Fluid();
       ms->registerSynthesizer(fluid);
 
@@ -3878,6 +3882,7 @@ MasterSynthesizer* synthesizerFactory()
       // ms->registerEffect(1, new Freeverb);
       ms->setEffect(0, 1);
       ms->setEffect(1, 0);
+#endif
       return ms;
       }
 
