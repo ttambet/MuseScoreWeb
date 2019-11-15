@@ -47,7 +47,7 @@
 #include "click.h"
 
 #define OV_EXCLUDE_STATIC_CALLBACKS
-#include <vorbis/vorbisfile.h>
+// #include <vorbis/vorbisfile.h>
 
 #ifdef USE_PORTMIDI
 #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
@@ -87,9 +87,9 @@ static size_t ovRead(void* ptr, size_t size, size_t nmemb, void* datasource);
 static int ovSeek(void* datasource, ogg_int64_t offset, int whence);
 static long ovTell(void* datasource);
 
-static ov_callbacks ovCallbacks = {
-      ovRead, ovSeek, 0, ovTell
-      };
+// static ov_callbacks ovCallbacks = {
+//       ovRead, ovSeek, 0, ovTell
+//       };
 
 //---------------------------------------------------------
 //   ovRead
@@ -209,7 +209,7 @@ Seq::~Seq()
 void Seq::setScoreView(ScoreView* v)
       {
       if (oggInit) {
-            ov_clear(&vf);
+            // ov_clear(&vf);
             oggInit = false;
             }
       if (cv !=v && cs) {
@@ -315,7 +315,8 @@ void Seq::start()
             if (!oggInit) {
                   vorbisData.pos  = 0;
                   vorbisData.data = cs->audio()->data();
-                  int n = ov_open_callbacks(&vorbisData, &vf, 0, 0, ovCallbacks);
+                  // int n = ov_open_callbacks(&vorbisData, &vf, 0, 0, ovCallbacks);
+                  int n = -1;
                   if (n < 0) {
                         qDebug("ogg open failed: %d", n);
                         }
@@ -349,7 +350,7 @@ void Seq::stop()
 
       allowBackgroundRendering = false;
       if (oggInit) {
-            ov_clear(&vf);
+            // ov_clear(&vf);
             oggInit = false;
             }
       if (!_driver)
@@ -358,8 +359,8 @@ void Seq::stop()
             _driver->stopTransport();
       if (cv)
             cv->setCursorOn(false);
-      if (midiRenderFuture.isRunning())
-            midiRenderFuture.waitForFinished();
+      // if (midiRenderFuture.isRunning())
+            // midiRenderFuture.waitForFinished();
       if (cs) {
             cs->setUpdateAll();
             cs->update();
@@ -831,7 +832,8 @@ void Seq::process(unsigned framesPerPeriod, float* buffer)
                               while (n > 0) {
                                     int section;
                                     float** pcm;
-                                    long rn = ov_read_float(&vf, &pcm, n, &section);
+                                    // long rn = ov_read_float(&vf, &pcm, n, &section);
+                                    long rn = 0;
                                     if (rn == 0)
                                           break;
                                     for (int i = 0; i < rn; ++i) {
@@ -870,7 +872,8 @@ void Seq::process(unsigned framesPerPeriod, float* buffer)
                         while (n > 0) {
                               int section;
                               float** pcm;
-                              long rn = ov_read_float(&vf, &pcm, n, &section);
+                              // long rn = ov_read_float(&vf, &pcm, n, &section);
+                              long rn = 0;
                               if (rn == 0)
                                     break;
                               for (int i = 0; i < rn; ++i) {
@@ -1026,8 +1029,8 @@ void Seq::collectEvents(int utick)
 
       mutex.lock();
 
-      if (midiRenderFuture.isRunning())
-            midiRenderFuture.waitForFinished();
+      // if (midiRenderFuture.isRunning())
+            // midiRenderFuture.waitForFinished();
 
       if (playlistChanged) {
             midi.setScoreChanged();
@@ -1063,10 +1066,10 @@ void Seq::ensureBufferAsync(int utick)
       {
       if (mutex.tryLock()) { // sync with possible collectEvents calls
 
-            if (midiRenderFuture.isRunning() || !allowBackgroundRendering) {
-                  mutex.unlock();
-                  return;
-                  }
+            // if (midiRenderFuture.isRunning() || !allowBackgroundRendering) {
+            //       mutex.unlock();
+            //       return;
+            //       }
 
             if (!renderEvents.empty()) {
                   // TODO: use C++17 map::merge()?
@@ -1079,9 +1082,9 @@ void Seq::ensureBufferAsync(int utick)
             if (unrenderedUtick - utick < minUtickBufferSize) {
                   const MidiRenderer::Chunk chunk = midi.getChunkAt(unrenderedUtick);
                   if (chunk) {
-                        midiRenderFuture = QtConcurrent::run([this, chunk]() {
-                              renderChunk(chunk, &renderEvents);
-                              });
+                        // midiRenderFuture = QtConcurrent::run([this, chunk]() {
+                              // renderChunk(chunk, &renderEvents);
+                              // });
                         }
                   }
             mutex.unlock();
@@ -1164,7 +1167,7 @@ void Seq::seekCommon(int utick)
 
       if (cs->playMode() == PlayMode::AUDIO) {
             ogg_int64_t sp = cs->utick2utime(utick) * MScore::sampleRate;
-            ov_pcm_seek(&vf, sp);
+            // ov_pcm_seek(&vf, sp);
             }
 
       guiPos = events.lower_bound(utick);

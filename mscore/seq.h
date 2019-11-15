@@ -138,7 +138,7 @@ class Seq : public QObject, public Sequencer {
       EventMap renderEvents;              // event list that is rendered in background
       RangeMap renderEventsStatus;
       MidiRenderer midi;
-      QFuture<void> midiRenderFuture;
+      // QFuture<void> midiRenderFuture;
       bool allowBackgroundRendering = false; // should be set to true only when playing, so no
                                              // score changes are possible.
       EventMap countInEvents;             // playlist of any metronome countin clicks
