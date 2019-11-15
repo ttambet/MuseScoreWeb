@@ -14,7 +14,7 @@
 #define RESOURCE_H
 
 #include "ui_resourceManager.h"
-#include "downloadUtils.h"
+// #include "downloadUtils.h"
 
 namespace Ms {
 

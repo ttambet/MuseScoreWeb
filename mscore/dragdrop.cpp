@@ -263,6 +263,7 @@ void ScoreView::dragEnterEvent(QDragEnterEvent* event)
                   image->load(str);
                   }
             else if (u.scheme() == "http" || u.scheme() == "https") {
+                  #ifdef WEBASSEMBLY_DISABLE
                   QNetworkAccessManager manager;
                   QNetworkReply* reply = manager.get(QNetworkRequest(u));
 
@@ -283,6 +284,7 @@ void ScoreView::dragEnterEvent(QDragEnterEvent* event)
                   image = new Image(score());
                   image->loadFromData(u.path(), ba);
                   delete reply;
+                  #endif
                   }
             if (image) {
                   editData.dropElement = image;

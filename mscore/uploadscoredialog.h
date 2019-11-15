@@ -17,7 +17,7 @@
 
 namespace Ms {
 
-class LoginManager;
+// class LoginManager;
 
 //---------------------------------------------------------
 //   LoginDialog
@@ -27,7 +27,7 @@ class UploadScoreDialog : public QDialog, public Ui::UploadScoreDialog
       {
       Q_OBJECT
 
-      LoginManager* _loginManager;
+      // LoginManager* _loginManager;
       int _nid;
       QString _url;
 
@@ -48,7 +48,7 @@ class UploadScoreDialog : public QDialog, public Ui::UploadScoreDialog
       void showOrHideUploadAudio();
 
    public:
-      UploadScoreDialog(LoginManager*);
+      UploadScoreDialog();
       void setTitle(const QString& t) { title->setText(t); }
       };
 }

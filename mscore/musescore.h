@@ -27,7 +27,7 @@
 #include "ui_aboutbox.h"
 #include "ui_aboutmusicxmlbox.h"
 #include "singleapp/src/QtSingleApplication"
-#include "updatechecker.h"
+// #include "updatechecker.h"
 #include "libmscore/musescoreCore.h"
 #include "libmscore/score.h"
 #include "newwizard.h"
@@ -100,7 +100,7 @@ class ScoreComparisonTool;
 class ScriptRecorder;
 class ScriptRecorderWidget;
 class Startcenter;
-class HelpBrowser;
+// class HelpBrowser;
 class ToolbarEditor;
 class TourHandler;
 class GeneralAutoUpdater;
@@ -232,8 +232,8 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       ScoreTab* ctab                       { 0 };
       QMap<MasterScore*, bool> scoreWasShown; // whether each score in scoreList has ever been shown
       ScoreState _sstate;
-      UpdateChecker* ucheck;
-      ExtensionsUpdateChecker* packUChecker = nullptr;
+      // UpdateChecker* ucheck;
+      // ExtensionsUpdateChecker* packUChecker = nullptr;
 
       static const std::list<const char*> _allNoteInputMenuEntries;
       std::list<const char*> _noteInputMenuEntries { _allNoteInputMenuEntries };
@@ -350,7 +350,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       QLabel* _modeText;
       QLabel* _positionLabel;
       NewWizard* newWizard           { 0 };
-      HelpBrowser* helpBrowser       { 0 };
+      // HelpBrowser* helpBrowser       { 0 };
       QDockWidget* manualDock        { 0 };
 
       PaletteWorkspace* paletteWorkspace { nullptr };
@@ -422,10 +422,10 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
 
       QComboBox* layerSwitch;
       QComboBox* playMode;
-      QNetworkAccessManager* _networkManager { 0 };
+      // QNetworkAccessManager* _networkManager { 0 };
       QAction* lastCmd                       { 0 };
       const Shortcut* lastShortcut           { 0 };
-      QHelpEngine* _helpEngine               { 0 };
+      // QHelpEngine* _helpEngine               { 0 };
       int globalX, globalY;       // current mouse position
 
       QAction* countInAction;
@@ -691,7 +691,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       Q_INVOKABLE void loadFile(const QString& url);
       void loadFile(const QUrl&);
       QTemporaryFile* getTemporaryScoreFileCopy(const QFileInfo& info, const QString& baseNameTemplate);
-      QNetworkAccessManager* networkManager();
+      // QNetworkAccessManager* networkManager();
       virtual Score* openScore(const QString& fn, bool switchTab = true);
       bool hasToCheckForUpdate();
       bool hasToCheckForExtensionsUpdate();
@@ -894,7 +894,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void showLoginDialog();
       void showUploadScoreDialog();
       LoginManager* loginManager()     { return _loginManager; }
-      QHelpEngine*  helpEngine() const { return _helpEngine;   }
+      // QHelpEngine*  helpEngine() const { return _helpEngine;   }
 
       virtual void updateInspector() override;
       void updateInstrumentDialog();

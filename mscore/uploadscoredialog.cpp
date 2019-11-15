@@ -13,7 +13,7 @@
 #include "musescore.h"
 #include "libmscore/score.h"
 #include "libmscore/undo.h"
-#include "network/loginmanager.h"
+// #include "network/loginmanager.h"
 #include "uploadscoredialog.h"
 
 namespace Ms {
@@ -38,18 +38,18 @@ void MuseScore::showUploadScoreDialog()
             return;
             }
       if (uploadScoreDialog == nullptr) {
-            uploadScoreDialog = new UploadScoreDialog(_loginManager);
+            uploadScoreDialog = new UploadScoreDialog();
             }
 
       uploadScoreDialog->setTitle(currentScore()->title());
-      _loginManager->tryLogin();
+      // _loginManager->tryLogin();
       }
 
 //---------------------------------------------------------
 //   UploadScoreDialog
 //---------------------------------------------------------
 
-UploadScoreDialog::UploadScoreDialog(LoginManager* loginManager)
+UploadScoreDialog::UploadScoreDialog()
  : QDialog(0)
       {
       setObjectName("UploadScoreDialog");
@@ -95,13 +95,13 @@ UploadScoreDialog::UploadScoreDialog(LoginManager* loginManager)
 
       connect(buttonBox,   SIGNAL(clicked(QAbstractButton*)), SLOT(buttonBoxClicked(QAbstractButton*)));
       chkSignoutOnExit->setVisible(false);  // currently unused, so hide it
-      _loginManager = loginManager;
-      connect(_loginManager, SIGNAL(uploadSuccess(QString, QString, QString)), this, SLOT(uploadSuccess(QString, QString, QString)));
-      connect(_loginManager, SIGNAL(uploadError(QString)), this, SLOT(uploadError(QString)));
-      connect(_loginManager, SIGNAL(getScoreSuccess(QString, QString, bool, QString, QString, QString)), this, SLOT(onGetScoreSuccess(QString, QString, bool, QString, QString, QString)));
-      connect(_loginManager, SIGNAL(getScoreError(QString)), this, SLOT(onGetScoreError(QString)));
-      connect(_loginManager, SIGNAL(tryLoginSuccess()), this, SLOT(display()));
-      connect(_loginManager, SIGNAL(displaySuccess()), this, SLOT(displaySuccess()));
+      // _loginManager = loginManager;
+      // connect(_loginManager, SIGNAL(uploadSuccess(QString, QString, QString)), this, SLOT(uploadSuccess(QString, QString, QString)));
+      // connect(_loginManager, SIGNAL(uploadError(QString)), this, SLOT(uploadError(QString)));
+      // connect(_loginManager, SIGNAL(getScoreSuccess(QString, QString, bool, QString, QString, QString)), this, SLOT(onGetScoreSuccess(QString, QString, bool, QString, QString, QString)));
+      // connect(_loginManager, SIGNAL(getScoreError(QString)), this, SLOT(onGetScoreError(QString)));
+      // connect(_loginManager, SIGNAL(tryLoginSuccess()), this, SLOT(display()));
+      // connect(_loginManager, SIGNAL(displaySuccess()), this, SLOT(displaySuccess()));
       connect(btnSignout, SIGNAL(pressed()), this, SLOT(logout()));
 
       MuseScore::restoreGeometry(this);
@@ -135,7 +135,7 @@ void UploadScoreDialog::upload(int nid)
      if(mscore->saveAs(score, true, path, "mscz")) {
            QString licenseString = license->currentData().toString();
            QString privateString = cbPrivate->isChecked() ? "1" : "0";
-            _loginManager->upload(path, nid, title->text(), description->toPlainText(), privateString, licenseString, tags->text(), changes->toPlainText());
+            // _loginManager->upload(path, nid, title->text(), description->toPlainText(), privateString, licenseString, tags->text(), changes->toPlainText());
            }
      }
 
@@ -155,8 +155,8 @@ void UploadScoreDialog::uploadSuccess(const QString& url, const QString& nid, co
             score->undo(new ChangeMetaTags(score, metatags));
             score->endCmd();
       }
-      if (uploadAudio->isChecked())
-            _loginManager->getMediaUrl(nid, vid, "mp3");
+      if (uploadAudio->isChecked()) {}
+            // _loginManager->getMediaUrl(nid, vid, "mp3");
       else
             displaySuccess();
       }
@@ -205,7 +205,7 @@ void UploadScoreDialog::showOrHideUploadAudio()
 
 void UploadScoreDialog::display()
       {
-      lblUsername->setText(_loginManager->userName());
+      // lblUsername->setText(_loginManager->userName());
       QString source = mscore->currentScore()->masterScore()->metaTag("source");
       if (!source.isEmpty()) {
             QStringList sl = source.split("/");
@@ -215,7 +215,7 @@ void UploadScoreDialog::display()
                   int nid = nidString.toInt(&ok);
                   if (ok) {
                         _nid = nid;
-                        _loginManager->getScoreInfo(nid);
+                        // _loginManager->getScoreInfo(nid);
                         return;
                         }
                   }
@@ -286,7 +286,7 @@ void UploadScoreDialog::clear()
 
 void UploadScoreDialog::logout()
       {
-      _loginManager->logout();
+      // _loginManager->logout();
       setVisible(false);
       }
 

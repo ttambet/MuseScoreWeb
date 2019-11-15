@@ -71,6 +71,8 @@ void ResourceManager::selectExtensionsTab()
 
 void ResourceManager::displayExtensions()
       {
+#ifdef WEBASSEMBLY_DISABLE
+
       DownloadUtils js(this);
       js.setTarget(baseAddr() + "extensions/details.json");
       js.download();
@@ -142,6 +144,7 @@ void ResourceManager::displayExtensions()
             extensionsTable->setIndexWidget(extensionsTable->model()->index(row, col++), buttonUninstall);
             row++;
             }
+#endif
       }
 
 //---------------------------------------------------------
@@ -150,6 +153,8 @@ void ResourceManager::displayExtensions()
 
 void ResourceManager::displayLanguages()
       {
+#ifdef WEBASSEMBLY_DISABLE
+
       // Download details.json
       DownloadUtils js(this);
       js.setTarget(baseAddr() + "languages/details.json");
@@ -246,6 +251,7 @@ void ResourceManager::displayLanguages()
                   }
             row++;
             }
+#endif
       }
 
 //---------------------------------------------------------
@@ -271,6 +277,8 @@ bool ResourceManager::verifyLanguageFile(QString filename, QString hash)
 
 void ResourceManager::downloadLanguage()
       {
+#ifdef WEBASSEMBLY_DISABLE
+
       QPushButton *button = static_cast<QPushButton*>( sender() );
       QString dta  = languageButtonMap[button];
       QString hash = languageButtonHashMap[button];
@@ -319,6 +327,7 @@ void ResourceManager::downloadLanguage()
                   button->setEnabled(1);
                   }
             }
+#endif
       }
 
 //---------------------------------------------------------
@@ -327,6 +336,8 @@ void ResourceManager::downloadLanguage()
 
 void ResourceManager::downloadExtension()
       {
+#ifdef WEBASSEMBLY_DISABLE
+
       QPushButton* button = static_cast<QPushButton*>(sender());
       QString path  = button->property("path").toString();
       QString hash = button->property("hash").toString();
@@ -371,6 +382,7 @@ void ResourceManager::downloadExtension()
                   button->setEnabled(1);
                   }
             }
+#endif
       }
 
 //---------------------------------------------------------

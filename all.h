@@ -172,23 +172,22 @@
 #include <QMdiSubWindow>
 #include <QSpacerItem>
 #include <QGraphicsSceneMouseEvent>
-#include <QtConcurrent>
 #include <QScreen>
 #include <QGestureEvent>
 
 #include <QSvgRenderer>
 #include <QSvgGenerator>
 
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkCookie>
-#include <QNetworkCookieJar>
-#include <QNetworkProxyFactory>
-#include <QHostAddress>
-#include <QUdpSocket>
+// #include <QNetworkAccessManager>
+// #include <QNetworkReply>
+// #include <QNetworkCookie>
+// #include <QNetworkCookieJar>
+// #include <QNetworkProxyFactory>
+// #include <QHostAddress>
+// #include <QUdpSocket>
 
-#include <QHttpPart>
-#include <QHttpMultiPart>
+// #include <QHttpPart>
+// #include <QHttpMultiPart>
 
 #include <QQmlEngine>
 #include <QQmlComponent>
@@ -197,9 +196,7 @@
 #include <QQuickView>
 #include <QQuickWidget>
 
-#include <QHelpEngine>
 #include <QWidgetAction>
-#include <QHelpIndexModel>
 #include <QTextBrowser>
 
 #include <QJsonDocument>

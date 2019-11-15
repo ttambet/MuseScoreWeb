@@ -15,7 +15,7 @@
 
 namespace Ms {
 
-class HelpEngine;
+// class HelpEngine;
 
 //---------------------------------------------------------
 //   HelpQuery

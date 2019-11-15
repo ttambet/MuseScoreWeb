@@ -12,8 +12,8 @@
 
 #include "musescore.h"
 #include "logindialog.h"
-#include "network/loginmanager.h"
-#include "kQOAuth/kqoauthrequest_xauth.h"
+// #include "network/loginmanager.h"
+// #include "kQOAuth/kqoauthrequest_xauth.h"
 
 namespace Ms {
 
@@ -24,7 +24,7 @@ namespace Ms {
 void MuseScore::showLoginDialog()
       {
       if (loginDialog == nullptr) {
-            loginDialog = new LoginDialog(loginManager());
+            loginDialog = new LoginDialog();
             
             }
       loginDialog->setVisible(true);
@@ -34,7 +34,7 @@ void MuseScore::showLoginDialog()
 //   LoginDialog
 //---------------------------------------------------------
 
-LoginDialog::LoginDialog(LoginManager* loginManager)
+LoginDialog::LoginDialog()
  : QDialog(0)
       {
       setObjectName("LoginDialog");
@@ -45,11 +45,11 @@ LoginDialog::LoginDialog(LoginManager* loginManager)
 
       setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
       connect(buttonBox,   SIGNAL(clicked(QAbstractButton*)), SLOT(buttonBoxClicked(QAbstractButton*)));
-      _loginManager = loginManager;
+      // _loginManager = loginManager;
       createAccountLabel->setText("<a href=\"https://musescore.com/user/register\">" + tr("Create an account") + "</a>");
       forgotPasswordLabel->setText("<a href=\"https://musescore.com/user/password\">" + tr("Forgot password?") + "</a>");
-      connect(_loginManager, SIGNAL(loginSuccess()), this, SLOT(onLoginSuccess()));
-      connect(_loginManager, SIGNAL(loginError(const QString&)), this, SLOT(onLoginError(const QString&)));
+      // connect(_loginManager, SIGNAL(loginSuccess()), this, SLOT(onLoginSuccess()));
+      // connect(_loginManager, SIGNAL(loginError(const QString&)), this, SLOT(onLoginError(const QString&)));
 
       MuseScore::restoreGeometry(this);
       }
@@ -76,7 +76,7 @@ void LoginDialog::buttonBoxClicked(QAbstractButton* button)
 
 void LoginDialog::login()
       {
-      _loginManager->login(usernameEdit->text(), passwordEdit->text());
+      // _loginManager->login(usernameEdit->text(), passwordEdit->text());
       }
 
 //---------------------------------------------------------

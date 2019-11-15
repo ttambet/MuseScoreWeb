@@ -11,7 +11,7 @@
 //=============================================================================
 
 #include "help.h"
-#include "helpBrowser.h"
+// #include "helpBrowser.h"
 #include "musescore.h"
 #include "scoreview.h"
 
@@ -91,21 +91,21 @@ void HelpQuery::textChanged(const QString& ss)
                   menu->removeAction(a);
             }
       emptyState = false;
-      if (!mscore->helpEngine())
-            return;
-      QMap<QString,QUrl>list = mscore->helpEngine()->linksForIdentifier(s);
+      // if (!mscore->helpEngine())
+            // return;
+      // QMap<QString,QUrl>list = mscore->helpEngine()->linksForIdentifier(s);
 //      QMap<QString,QUrl>list = mscore->helpEngine()->indexModel()->linksForKeyword(s);
-      int k = 0;
-      for (auto i = list.begin(); i != list.end(); ++i) {
-            QAction* action = new QAction(i.key(), this);
-            action->setData(i.value());
-//printf("add action <%s> <%s>\n", qPrintable(i.key()), qPrintable(i.value().toString()));
-            menu->addAction(action);
-            connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
-            mapper->setMapping(action, action);
-            if (++k > 10)
-                  break;
-            }
+//       int k = 0;
+//       for (auto i = list.begin(); i != list.end(); ++i) {
+//             QAction* action = new QAction(i.key(), this);
+//             action->setData(i.value());
+// //printf("add action <%s> <%s>\n", qPrintable(i.key()), qPrintable(i.value().toString()));
+//             menu->addAction(action);
+//             connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
+//             mapper->setMapping(action, action);
+//             if (++k > 10)
+//                   break;
+//             }
       }
 
 //---------------------------------------------------------
@@ -131,14 +131,14 @@ void HelpQuery::actionTriggered(QObject* obj)
 
 void HelpQuery::returnPressed()
       {
-      QHelpEngine* he = mscore->helpEngine();
-      if (!he)
-            return;
-      QMap<QString,QUrl>list = he->linksForIdentifier(entry->text().toLower());
-      if (!list.isEmpty()) {
-            mscore->showHelp(list.begin().value());
-            }
-      entry->clear();
+      // QHelpEngine* he = mscore->helpEngine();
+      // if (!he)
+      //       return;
+      // QMap<QString,QUrl>list = he->linksForIdentifier(entry->text().toLower());
+      // if (!list.isEmpty()) {
+      //       mscore->showHelp(list.begin().value());
+      //       }
+      // entry->clear();
       }
 
 //---------------------------------------------------------
@@ -148,6 +148,7 @@ void HelpQuery::returnPressed()
 
 void MuseScore::showHelp(const QUrl& url)
       {
+#ifdef WEBASSEMBLY_DISABLE
       qDebug("showHelp <%s>", qPrintable(url.toString()));
 
       if (!_helpEngine)
@@ -169,6 +170,7 @@ void MuseScore::showHelp(const QUrl& url)
             }
       manualDock->show();
       helpBrowser->setContent(url);
+#endif
       }
 
 void MuseScore::showHelp(QString s)

@@ -17,7 +17,7 @@
 
 namespace Ms {
 
-class LoginManager;
+// class LoginManager;
 
 //---------------------------------------------------------
 //   LoginDialog
@@ -29,7 +29,7 @@ class LoginDialog : public QDialog, public Ui::LoginDialog
       {
       Q_OBJECT
       
-      LoginManager* _loginManager;
+      // LoginManager* _loginManager;
 
       virtual void hideEvent(QHideEvent*);
 
@@ -43,7 +43,7 @@ class LoginDialog : public QDialog, public Ui::LoginDialog
       void login();
 
    public:
-      LoginDialog(LoginManager* loginManager);
+      LoginDialog();
       };
 }
 
