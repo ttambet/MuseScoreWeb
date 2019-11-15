@@ -5,9 +5,9 @@ PRECOMPILED_HEADER = all.h
 
 QT += gui xml xmlpatterns widgets svg qml quick quickwidgets printsupport
 
-LIBS += -L/usr/local/lib -lfreetype -lz -lvorbis -lvorbisfile -framework Cocoa
+#LIBS += -L/usr/local/lib -lfreetype -lz -lvorbis -lvorbisfile
 
-INCLUDEPATH += ./libmscore ./thirdparty/freetype/include ./mscore ./thirdparty /usr/local/include ./thirdparty/dtl
+INCLUDEPATH += ./libmscore ./thirdparty/freetype/include ./mscore ./thirdparty ./thirdparty/dtl
 
 QMAKE_CXXFLAGS += -include $$_PRO_FILE_PWD_/all.h -fsigned-char -ffast-math -std=c++11 -stdlib=libc++
 QMAKE_CXXFLAGS +=     -Wno-trigraphs -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-float-conversion -Wno-non-literal-null-conversion -Wno-objc-literal-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -Wno-sign-conversion -Wno-infinite-recursion -Wno-move -Wno-comma -Wno-block-capture-autoreleasing -Wno-strict-prototypes -Wno-range-loop-analysis -Wno-semicolon-before-method-body -Wno-four-char-constants -Wno-unknown-pragmas -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-overloaded-virtual -Wno-deprecated-declarations -Wno-unused-parameter
@@ -423,7 +423,7 @@ mscore/drumview.cpp \
 mscore/scoretab.cpp \
 mscore/keyedit.cpp \
 mscore/harmonyedit.cpp \
-mscore/updatechecker.cpp \
+#mscore/updatechecker.cpp \
 mscore/importove.cpp \
 mscore/ove.cpp \
 mscore/ruler.cpp \
@@ -470,7 +470,7 @@ mscore/svggenerator.cpp \
 mscore/masterpalette.cpp \
 mscore/dragdrop.cpp \
 mscore/waveview.cpp \
-mscore/helpBrowser.cpp \
+#mscore/helpBrowser.cpp \
 mscore/inspector/inspector.cpp \
 mscore/inspector/inspectorBase.cpp \
 mscore/inspector/inspectorBeam.cpp \
@@ -565,7 +565,7 @@ mscore/scorecmp/scorecmp.cpp \
 mscore/scorecmp/scorediffmodel.cpp \
 mscore/scorecmp/scorelistmodel.cpp \
 mscore/resourceManager.cpp \
-mscore/downloadUtils.cpp \
+#mscore/downloadUtils.cpp \
 mscore/textcursor.cpp \
 mscore/continuouspanel.cpp \
 mscore/accessibletoolbutton.cpp \
@@ -576,7 +576,7 @@ mscore/scorePreview.cpp \
 mscore/scoreInfo.cpp \
 mscore/templateBrowser.cpp \
 mscore/logindialog.cpp \
-mscore/network/loginmanager.cpp \
+#mscore/network/loginmanager.cpp \
 mscore/uploadscoredialog.cpp \
 mscore/breaksdialog.cpp \
 mscore/searchComboBox.cpp \
@@ -595,7 +595,7 @@ mscore/qml/msqmlengine.cpp \
 mscore/qml/nativemenu.cpp \
 mscore/qml/nativetooltip.cpp \
 mscore/qmldockwidget.cpp \
-mscore/macos/cocoabridge.mm \
+#mscore/macos/cocoabridge.mm \
 mscore/prefsdialog.cpp \
 awl/awlplugin.cpp \
 awl/aslider.cpp \
@@ -895,7 +895,7 @@ mscore/capella.h \
 mscore/chordview.h \
 mscore/click.h \
 mscore/continuouspanel.h \
-mscore/downloadUtils.h \
+#mscore/downloadUtils.h \
 mscore/driver.h \
 mscore/drumroll.h \
 mscore/drumtools.h \
@@ -921,7 +921,7 @@ mscore/globals.h \
 mscore/greendotbutton.h \
 mscore/harmonycanvas.h \
 mscore/harmonyedit.h \
-mscore/helpBrowser.h \
+#mscore/helpBrowser.h \
 mscore/icons.h \
 mscore/importgtp.h \
 mscore/importmxml.h \
@@ -940,8 +940,8 @@ mscore/keyedit.h \
 mscore/layer.h \
 mscore/licence.h \
 mscore/logindialog.h \
-mscore/network/loginmanager.h \
-mscore/network/loginmanager_p.h \
+#mscore/network/loginmanager.h \
+#mscore/network/loginmanager_p.h \
 mscore/magbox.h \
 mscore/masterpalette.h \
 mscore/measureproperties.h \
@@ -1025,7 +1025,7 @@ mscore/transposedialog.h \
 mscore/tremolobarcanvas.h \
 mscore/tremolobarprop.h \
 mscore/tupletdialog.h \
-mscore/updatechecker.h \
+#mscore/updatechecker.h \
 mscore/uploadscoredialog.h \
 mscore/waveview.h \
 mscore/webpage.h \
@@ -1062,21 +1062,21 @@ thirdparty/beatroot/Induction.cpp \
 thirdparty/beatroot/BeatTracker.cpp \
 thirdparty/beatroot/AgentList.cpp \
 thirdparty/beatroot/Agent.cpp \
-fluid/chan.cpp \
-fluid/conv.cpp \
-fluid/dsp.cpp \
-fluid/fluid.cpp \
-fluid/fluidgui.cpp \
-fluid/gen.cpp \
-fluid/mod.cpp \
-fluid/sfont.cpp \
+#fluid/chan.cpp \
+#fluid/conv.cpp \
+#fluid/dsp.cpp \
+#fluid/fluid.cpp \
+#fluid/fluidgui.cpp \
+#fluid/gen.cpp \
+#fluid/mod.cpp \
+#fluid/sfont.cpp \
 #fluid/sfont3.cpp \
-fluid/voice.cpp \
+#fluid/voice.cpp \
 
 HEADERS += \
 thirdparty/singleapp/src/qtsingleapplication.h \
 thirdparty/singleapp/src/qtlocalpeer.h \
-fluid/fluidgui.h \
+#fluid/fluidgui.h \
 
-FORMS += \
-fluid/fluid_gui.ui \
+#FORMS += \
+#fluid/fluid_gui.ui \
