@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/**",
-                "/usr/local/include/**"
+                "/usr/local/include/**",
+                "/Users/matan/Qt/5.12.4/clang_64/include/**",
+                "/Users/matan/Qt/5.12.4/Src/qtbase/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
