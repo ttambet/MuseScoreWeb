@@ -94,6 +94,8 @@
 #include "startupWizard.h"
 #include "tourhandler.h"
 
+#include "qml/msqmlengine.h"
+
 #include "libmscore/mscore.h"
 #include "libmscore/system.h"
 #include "libmscore/measure.h"

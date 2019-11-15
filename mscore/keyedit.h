@@ -21,6 +21,7 @@
 #define __KEYEDIT_H__
 
 #include "ui_keyedit.h"
+#include "libmscore/keysig.h"
 
 namespace Ms {
 
