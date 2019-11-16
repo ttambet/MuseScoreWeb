@@ -7,10 +7,6 @@
             "options": {
                 "cwd": "${workspaceFolder}/build.web"
             },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
             "problemMatcher":"$gcc"
         },
         {
@@ -21,6 +17,22 @@
                 "cwd": "${workspaceFolder}"
             },
             "problemMatcher":"$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "Build WASM",
+            "command": "set -o pipefail; ~/Qt/5.13.2/wasm_32/bin/qmake ../libmscore.wasm.pro && make -j8  2>&1 | tee build.log",
+            "options": {
+                "cwd": "${workspaceFolder}/build.wasm"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": ["relative", "${workspaceRoot}/build.wasm"]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ],
     "version": "2.0.0"
