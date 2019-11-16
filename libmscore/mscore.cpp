@@ -344,7 +344,7 @@ void MScore::init()
       // do not load application specific fonts
       // for MAC, they are in Resources/fonts
       //
-#if !defined(Q_OS_MAC) && !defined(Q_OS_IOS)
+#if !defined(Q_OS_MAC) && !defined(Q_OS_IOS) && defined(WEBASSEMBLY_DISABLE)
       static const char* fonts[] = {
             ":/fonts/musejazz/MuseJazzText.otf",
             ":/fonts/campania/Campania.otf",
