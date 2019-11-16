@@ -14,6 +14,7 @@ QMAKE_CXXFLAGS +=     -Wno-trigraphs -Wno-missing-field-initializers -Wno-missin
 QMAKE_CXXFLAGS += -s USE_ZLIB=1
 LIBS += -s USE_ZLIB=1 -s TOTAL_MEMORY=512*1024*1024 -s TOTAL_STACK=128*1024*1024
 LIBS += --source-map-base http://localhost:8000/build.wasm/
+LIBS += --preload-file ../applebuild/mscore.app/Contents/Resources/@/Users/matan/Documents/code/MuseScore/applebuild/share/Contents/Resources/
 RESOURCES += mscore/musescore.qrc mscore/qml.qrc mscore/musescorefonts-Mac.qrc effects/zita1/zita.qrc
 
 SOURCES = \
