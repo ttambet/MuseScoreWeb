@@ -137,9 +137,9 @@
 #ifdef USE_LAME
 #include "exportmp3.h"
 #endif
-#ifdef Q_OS_MAC
-#include "macos/cocoabridge.h"
-#endif
+// #ifdef Q_OS_MAC
+// #include "macos/cocoabridge.h"
+// #endif
 
 #ifdef AEOLUS
 extern Ms::Synthesizer* createAeolus();
@@ -7795,16 +7795,16 @@ int main(int argc, char* av[])
                   if (!name.isEmpty())
                         ++files;
                   }
-#ifdef Q_OS_MAC
-            // app->paths contains files requested to be loaded by OS X
-            // append these to argv and update file count
-            foreach(const QString& name, app->paths) {
-                  if (!name.isEmpty()) {
-                        argv << name;
-                        ++files;
-                        }
-                  }
-#endif
+// #ifdef Q_OS_MAC
+//             // app->paths contains files requested to be loaded by OS X
+//             // append these to argv and update file count
+//             foreach(const QString& name, app->paths) {
+//                   if (!name.isEmpty()) {
+//                         argv << name;
+//                         ++files;
+//                         }
+//                   }
+// #endif
             //
             // TODO: delete old session backups
             //
@@ -7818,14 +7818,14 @@ int main(int argc, char* av[])
 #endif
       mscore->writeSessionFile(false);
 
-#ifdef Q_OS_MAC
-      // there's a bug in Qt showing the toolbar unified after switching showFullScreen(), showMaximized(),
-      // showNormal()...
-      mscore->setUnifiedTitleAndToolBarOnMac(false);
+// #ifdef Q_OS_MAC
+//       // there's a bug in Qt showing the toolbar unified after switching showFullScreen(), showMaximized(),
+//       // showNormal()...
+//       mscore->setUnifiedTitleAndToolBarOnMac(false);
 
-      // don't let macOS add "Show Tab Bar" to "View" Menu
-      CocoaBridge::setAllowsAutomaticWindowTabbing(false);
-#endif
+//       // don't let macOS add "Show Tab Bar" to "View" Menu
+//       CocoaBridge::setAllowsAutomaticWindowTabbing(false);
+// #endif
 
       mscore->changeState(mscore->noScore() ? STATE_DISABLED : STATE_NORMAL);
       mscore->show();

@@ -21,9 +21,9 @@
 #include "libmscore/mscore.h"
 #include "preferences.h"
 
-#ifdef Q_OS_MAC
-#include "macos/cocoabridge.h"
-#endif
+// #ifdef Q_OS_MAC
+// #include "macos/cocoabridge.h"
+// #endif
 
 namespace Ms {
 
@@ -71,11 +71,11 @@ void Preferences::init(bool storeInMemoryOnly)
       defaultUsePortAudio = true;
 #endif
 
-#if defined(Q_OS_MAC) && !defined(TESTROOT)
-      const MuseScoreStyleType defaultAppGlobalStyle = CocoaBridge::isSystemDarkTheme() ? MuseScoreStyleType::DARK_FUSION : MuseScoreStyleType::LIGHT_FUSION;
-#else
+// #if defined(Q_OS_MAC) && !defined(TESTROOT)
+//       const MuseScoreStyleType defaultAppGlobalStyle = CocoaBridge::isSystemDarkTheme() ? MuseScoreStyleType::DARK_FUSION : MuseScoreStyleType::LIGHT_FUSION;
+// #else
       const MuseScoreStyleType defaultAppGlobalStyle = MuseScoreStyleType::LIGHT_FUSION;
-#endif
+// #endif
 
       QString wd = QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).arg(QCoreApplication::applicationName());
 
