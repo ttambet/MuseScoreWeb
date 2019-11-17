@@ -26,7 +26,7 @@
 #include "ui_insertmeasuresdialog.h"
 #include "ui_aboutbox.h"
 #include "ui_aboutmusicxmlbox.h"
-#include "singleapp/src/QtSingleApplication"
+// #include "singleapp/src/QtSingleApplication"
 // #include "updatechecker.h"
 #include "libmscore/musescoreCore.h"
 #include "libmscore/score.h"
@@ -210,6 +210,8 @@ class MeasuresDialog : public QDialog, public Ui::MeasuresDialogBase {
 //   MuseScoreApplication (mac only)
 //---------------------------------------------------------
 
+#ifdef WEBASSEMBLY_DISABLE
+
 class MuseScoreApplication : public QtSingleApplication {
    public:
       QStringList paths;
@@ -218,7 +220,7 @@ class MuseScoreApplication : public QtSingleApplication {
             };
       virtual bool event(QEvent *ev) override;
       };
-
+#endif
 
 //---------------------------------------------------------
 //   MuseScore

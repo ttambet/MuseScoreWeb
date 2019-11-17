@@ -52,7 +52,7 @@ gscore->style().set(Sid::MusicalTextFont, QString("Bravura Text"));
             QObject::connect(qApp, SIGNAL(messageReceived(const QString&)),
                mscore, SLOT(handleMessage(const QString&)));
 
-            static_cast<QtSingleApplication*>(qApp)->setActivationWindow(mscore, false);
+            // static_cast<QtSingleApplication*>(qApp)->setActivationWindow(mscore, false);
 
     // Score::FileError rv = Ms::readScore(score, name, false);
     // ScoreView* currentScoreView = mscore->appendScore(score);

@@ -3903,6 +3903,7 @@ bool MuseScore::unstable()
 //   MuseScoreApplication::event (mac only)
 //---------------------------------------------------------
 
+#ifdef WEBASSEMBLY_DISABLE
 bool MuseScoreApplication::event(QEvent* event)
       {
       switch(event->type()) {
@@ -3913,10 +3914,11 @@ bool MuseScoreApplication::event(QEvent* event)
                   paths.append(static_cast<QFileOpenEvent *>(event)->file());
                   return true;
             default:
-                  return QtSingleApplication::event(event);
+                  // return QtSingleApplication::event(event);
+                  return false;
             }
       }
-
+#endif
 //---------------------------------------------------------
 //   focusScoreView
 //---------------------------------------------------------
@@ -4967,7 +4969,7 @@ void MuseScore::handleMessage(const QString& message)
             return;
       if (startcenter)
             showStartcenter(false);
-      ((QtSingleApplication*)(qApp))->activateWindow();
+      // ((QtSingleApplication*)(qApp))->activateWindow();
       MasterScore* score = readScore(message);
       if (score) {
             setCurrentScoreView(appendScore(score));
@@ -7276,7 +7278,8 @@ int main(int argc, char* av[])
             appName  = "MuseScore3";
             }
 
-      MuseScoreApplication* app = new MuseScoreApplication(appName2, argc, av);
+      // MuseScoreApplication* app = new MuseScoreApplication(appName2, argc, av);
+      QApplication* app = new QApplication(argc, av);
       QCoreApplication::setApplicationName(appName);
 
       QCoreApplication::setOrganizationName("MuseScore");
@@ -7357,10 +7360,10 @@ int main(int argc, char* av[])
             printVersion("MuseScore");
             return EXIT_SUCCESS;
             }
-      MScore::debugMode = parser.isSet("d");
+      MScore::debugMode = true; // parser.isSet("d");
       MScore::noHorizontalStretch = MScore::noVerticalStretch = parser.isSet("L");
-      noSeq = parser.isSet("s");
-      noMidi = parser.isSet("m");
+      noSeq = true; // parser.isSet("s");
+      noMidi = true; // parser.isSet("m");
       if (parser.isSet("a")) {
             audioDriver = parser.value("a");
             if (audioDriver.isEmpty())
@@ -7529,6 +7532,7 @@ int main(int argc, char* av[])
       mscoreGlobalShare = getSharePath();
       iconPath = externalIcons ? mscoreGlobalShare + QString("icons/") :  QString(":/data/icons/");
 
+#ifdef WEBASSEMBLY_DISBALE
       if (!converterMode && !pluginMode) {
             if (!argv.isEmpty()) {
                   int ok = true;
@@ -7547,6 +7551,7 @@ int main(int argc, char* av[])
                   if (app->sendMessage(QString("")))
                       return 0;
             }
+#endif
       if (rawDiffMode || diffMode) {
             if (argv.size() != 2)
                   qFatal("Only two scores are needed for performing a comparison");
@@ -7739,7 +7744,7 @@ int main(int argc, char* av[])
                   if (targetWorkspace)
                         mscore->changeWorkspace(targetWorkspace, true);
                   
-                  preferences.setPreference(PREF_UI_APP_STARTUP_SHOWTOURS, sw->showTours());
+                  // preferences.setPreference(PREF_UI_APP_STARTUP_SHOWTOURS, sw->showTours());
                   delete sw;
 
                   // reinitialize preferences so some default values are calculated based on chosen language
@@ -7780,10 +7785,10 @@ int main(int argc, char* av[])
             }
       else {
             mscore->readSettings();
-            QObject::connect(qApp, SIGNAL(messageReceived(const QString&)),
-               mscore, SLOT(handleMessage(const QString&)));
+            // QObject::connect(qApp, SIGNAL(messageReceived(const QString&)),
+            //    mscore, SLOT(handleMessage(const QString&)));
 
-            static_cast<QtSingleApplication*>(qApp)->setActivationWindow(mscore, false);
+            // static_cast<QtSingleApplication*>(qApp)->setActivationWindow(mscore, false);
             // count filenames specified on the command line
             // these are the non-empty strings remaining in argv
             foreach(const QString& name, argv) {

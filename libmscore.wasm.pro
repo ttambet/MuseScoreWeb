@@ -1060,8 +1060,8 @@ thirdparty/rtf2html/fmt_opts.cpp \
 thirdparty/rtf2html/rtf_table.cpp \
 midi/midiinstrument.cpp \
 midi/midifile.cpp \
-thirdparty/singleapp/src/qtsingleapplication.cpp \
-thirdparty/singleapp/src/qtlocalpeer.cpp \
+#thirdparty/singleapp/src/qtsingleapplication.cpp \
+#thirdparty/singleapp/src/qtlocalpeer.cpp \
 thirdparty/beatroot/Induction.cpp \
 thirdparty/beatroot/BeatTracker.cpp \
 thirdparty/beatroot/AgentList.cpp \
@@ -1078,8 +1078,8 @@ thirdparty/beatroot/Agent.cpp \
 #fluid/voice.cpp \
 
 HEADERS += \
-thirdparty/singleapp/src/qtsingleapplication.h \
-thirdparty/singleapp/src/qtlocalpeer.h \
+#thirdparty/singleapp/src/qtsingleapplication.h \
+#thirdparty/singleapp/src/qtlocalpeer.h \
 #fluid/fluidgui.h \
 
 #FORMS += \
