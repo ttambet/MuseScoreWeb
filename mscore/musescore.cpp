@@ -7728,7 +7728,7 @@ int main(int argc, char* av[])
             if (preferences.getBool(PREF_APP_STARTUP_FIRSTSTART)) {
                   mscoreFirstStart = true;
                   StartupWizard* sw = new StartupWizard;
-                  sw->exec();
+                  // sw->exec();
                   preferences.setPreference(PREF_APP_STARTUP_FIRSTSTART, false);
                   preferences.setPreference(PREF_APP_KEYBOARDLAYOUT, sw->keyboardLayout());
                   preferences.setPreference(PREF_UI_APP_LANGUAGE, sw->language());
