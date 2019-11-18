@@ -252,10 +252,10 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       QSplitter* splitter;
       ScoreTab* tab1;
       ScoreTab* tab2;
-      NScrollArea* _navigator;
-      TDockWidget* _timeline;
-      ImportMidiPanel* importmidiPanel     { 0 };
-      QFrame* importmidiShowPanel;
+      // NScrollArea* _navigator;
+      // TDockWidget* _timeline;
+      // ImportMidiPanel* importmidiPanel     { 0 };
+      // QFrame* importmidiShowPanel;
       QSplitter* mainWindow;
 
       ScoreComparisonTool* scoreCmpTool    { 0 };
@@ -483,7 +483,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void showPalette(bool);
       void showInspector(bool);
       void showOmrPanel(bool);
-      void showNavigator(bool);
+      // void showNavigator(bool);
       void showTimeline(bool);
       void showSelectionWindow(bool);
       void showSearchDialog();
@@ -576,7 +576,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void switchPlayMode(int);
       void networkFinished();
       void switchLayoutMode(int);
-      void showMidiImportPanel();
+      // void showMidiImportPanel();
       void changeWorkspace(QAction*);
       void onLongOperationFinished();
 
@@ -789,10 +789,10 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       static Synthesizer* synthesizer(const QString& name);
 
       Q_INVOKABLE QString getLocaleISOCode() const;
-      Navigator* navigator() const;
-      NScrollArea* navigatorScrollArea() const { return _navigator; }
-      Timeline* timeline() const;
-      TDockWidget* timelineScrollArea() const { return _timeline; }
+      // Navigator* navigator() const;
+      // NScrollArea* navigatorScrollArea() const { return _navigator; }
+      // Timeline* timeline() const;
+      // TDockWidget* timelineScrollArea() const { return _timeline; }
       QWidget*   searchDialog() const;
       SelectionWindow* getSelectionWindow() const { return selectionWindow; }
       void updateLayer();
@@ -804,10 +804,10 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void noteTooShortForTupletDialog();
       void loadFiles(bool switchTab = true, bool singleFile = false);
                   // midi panel functions
-      void midiPanelOnSwitchToFile(const QString &file);
-      void midiPanelOnCloseFile(const QString &file);
-      void allowShowMidiPanel(const QString &file);
-      void setMidiReopenInProgress(const QString &file);
+      // void midiPanelOnSwitchToFile(const QString &file);
+      // void midiPanelOnCloseFile(const QString &file);
+      // void allowShowMidiPanel(const QString &file);
+      // void setMidiReopenInProgress(const QString &file);
 
       static Palette* newTempoPalette(bool defaultPalette = false);
       static Palette* newTextPalette(bool defaultPalette = false);

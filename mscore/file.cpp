@@ -345,7 +345,7 @@ MasterScore* MuseScore::readScore(const QString& name)
             return 0;
 
       MasterScore* score = new MasterScore(MScore::baseStyle());
-      setMidiReopenInProgress(name);
+      // setMidiReopenInProgress(name);
       Score::FileError rv = Ms::readScore(score, name, false);
       if (rv == Score::FileError::FILE_TOO_OLD || rv == Score::FileError::FILE_TOO_NEW || rv == Score::FileError::FILE_CORRUPTED) {
             if (readScoreError(name, rv, true)) {
@@ -375,7 +375,7 @@ MasterScore* MuseScore::readScore(const QString& name)
             score = 0;
             return 0;
             }
-      allowShowMidiPanel(name);
+      // allowShowMidiPanel(name);
       if (score)
             addRecentScore(score);
 
@@ -448,7 +448,7 @@ bool MuseScore::saveFile(MasterScore* score)
             }
       score->setCreated(false);
       updateWindowTitle(score);
-      scoreCmpTool->updateScoreVersions(score);
+      // scoreCmpTool->updateScoreVersions(score);
       int idx = scoreList.indexOf(score->masterScore());
       tab1->setTabText(idx, score->fileInfo()->completeBaseName());
       if (tab2)
@@ -1952,7 +1952,7 @@ bool MuseScore::saveAs(Score* cs_, bool saveCopy, const QString& path, const QSt
                   cs_->undoStack()->setClean();
                   dirtyChanged(cs_);
                   cs_->setCreated(false);
-                  scoreCmpTool->updateScoreVersions(cs_);
+                  // scoreCmpTool->updateScoreVersions(cs_);
                   addRecentScore(cs_);
                   writeSessionFile(false);
                   }

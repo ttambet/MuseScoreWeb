@@ -26,16 +26,16 @@ namespace Ms {
 //   showNavigator
 //---------------------------------------------------------
 
-void MuseScore::showNavigator(bool visible)
-      {
-      Navigator* n = static_cast<Navigator*>(_navigator->widget());
-      if (n == 0 && visible) {
-            n = new Navigator(_navigator, this);
-            n->setScoreView(cv);
-            }
-      _navigator->setVisible(visible);
-      getAction("toggle-navigator")->setChecked(visible);
-      }
+// void MuseScore::showNavigator(bool visible)
+//       {
+//       Navigator* n = static_cast<Navigator*>(_navigator->widget());
+//       if (n == 0 && visible) {
+//             n = new Navigator(_navigator, this);
+//             n->setScoreView(cv);
+//             }
+//       _navigator->setVisible(visible);
+//       getAction("toggle-navigator")->setChecked(visible);
+//       }
 
 //---------------------------------------------------------
 //   NScrollArea

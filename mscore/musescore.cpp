@@ -998,9 +998,9 @@ void MuseScore::populatePlaybackControls()
 MuseScore::MuseScore()
    : QMainWindow()
       {
-      _tourHandler = new TourHandler(this);
-      qApp->installEventFilter(_tourHandler);
-      _tourHandler->loadTours();
+      // _tourHandler = new TourHandler(this);
+      // qApp->installEventFilter(_tourHandler);
+      // _tourHandler->loadTours();
 
       QScreen* screen = QGuiApplication::primaryScreen();
       if (userDPI == 0.0) {
@@ -1035,12 +1035,12 @@ MuseScore::MuseScore()
       // ucheck = new UpdateChecker(this);
       // packUChecker = new ExtensionsUpdateChecker(this);
 
-      setAcceptDrops(true);
+      // setAcceptDrops(true);
       setFocusPolicy(Qt::NoFocus);
 
-#ifdef SCRIPT_INTERFACE
-      pluginManager = new PluginManager(0);
-#endif
+// #ifdef SCRIPT_INTERFACE
+//       pluginManager = new PluginManager(0);
+// #endif
 
       _positionLabel = new QLabel;
       _positionLabel->setObjectName("decoration widget");  // this prevents animations
@@ -1101,39 +1101,39 @@ MuseScore::MuseScore()
       layout->setSpacing(0);
       mainScore->setLayout(layout);
 
-      _navigator = new NScrollArea;
-      _navigator->setFocusPolicy(Qt::NoFocus);
-      mainWindow->addWidget(_navigator);
-      scorePageLayoutChanged();
-      showNavigator(preferences.getBool(PREF_UI_APP_STARTUP_SHOWNAVIGATOR));
+      // _navigator = new NScrollArea;
+      // _navigator->setFocusPolicy(Qt::NoFocus);
+      // mainWindow->addWidget(_navigator);
+      // scorePageLayoutChanged();
+      // showNavigator(preferences.getBool(PREF_UI_APP_STARTUP_SHOWNAVIGATOR));
 
-      _timeline = new TDockWidget;
-      _timeline->setFocusPolicy(Qt::NoFocus);
-      addDockWidget(Qt::BottomDockWidgetArea, _timeline);
-      scorePageLayoutChanged();
-      showTimeline(false);
+      // _timeline = new TDockWidget;
+      // _timeline->setFocusPolicy(Qt::NoFocus);
+      // addDockWidget(Qt::BottomDockWidgetArea, _timeline);
+      // scorePageLayoutChanged();
+      // showTimeline(false);
 
-      scoreCmpTool = new ScoreComparisonTool;
-      scoreCmpTool->setVisible(false);
-      {
-      QAction* a = getAction("toggle-scorecmp-tool");
-      connect(
-         scoreCmpTool, &ScoreComparisonTool::visibilityChanged,
-         a,            &QAction::setChecked
-         );
-      }
-      addDockWidget(Qt::BottomDockWidgetArea, scoreCmpTool);
+      // scoreCmpTool = new ScoreComparisonTool;
+      // scoreCmpTool->setVisible(false);
+      // {
+      // QAction* a = getAction("toggle-scorecmp-tool");
+      // connect(
+      //    scoreCmpTool, &ScoreComparisonTool::visibilityChanged,
+      //    a,            &QAction::setChecked
+      //    );
+      // }
+      // addDockWidget(Qt::BottomDockWidgetArea, scoreCmpTool);
 
-      if (MuseScore::unstable()) {
-            scriptRecorder = new ScriptRecorderWidget(this, this);
-            scriptRecorder->setVisible(false);
-            QAction* a = getAction("toggle-script-recorder");
-            connect(
-               scriptRecorder, &ScriptRecorderWidget::visibilityChanged,
-               a,              &QAction::setChecked
-               );
-            addDockWidget(Qt::RightDockWidgetArea, scriptRecorder);
-            }
+      // if (MuseScore::unstable()) {
+      //       scriptRecorder = new ScriptRecorderWidget(this, this);
+      //       scriptRecorder->setVisible(false);
+      //       QAction* a = getAction("toggle-script-recorder");
+      //       connect(
+      //          scriptRecorder, &ScriptRecorderWidget::visibilityChanged,
+      //          a,              &QAction::setChecked
+      //          );
+      //       addDockWidget(Qt::RightDockWidgetArea, scriptRecorder);
+      //       }
 
       mainWindow->setStretchFactor(0, 1);
       mainWindow->setStretchFactor(1, 0);
@@ -1144,26 +1144,26 @@ MuseScore::MuseScore()
       envelope->setOrientation(Qt::Vertical);
       envelope->addWidget(mainWindow);
 
-      importmidiPanel = new ImportMidiPanel(this);
-      importmidiPanel->setVisible(false);
-      envelope->addWidget(importmidiPanel);
+      // importmidiPanel = new ImportMidiPanel(this);
+      // importmidiPanel->setVisible(false);
+      // envelope->addWidget(importmidiPanel);
 
-      {
-      importmidiShowPanel = new QFrame;
-      QHBoxLayout *hl = new QHBoxLayout;
-      hl->setMargin(0);
-      hl->setSpacing(0);
-      importmidiShowPanel->setLayout(hl);
-      showMidiImportButton = new QPushButton();
-      showMidiImportButton->setFocusPolicy(Qt::ClickFocus);
-      importmidiShowPanel->setVisible(false);
-      connect(showMidiImportButton, SIGNAL(clicked()), SLOT(showMidiImportPanel()));
-      connect(importmidiPanel, SIGNAL(closeClicked()), importmidiShowPanel, SLOT(show()));
-      hl->addWidget(showMidiImportButton);
-      QSpacerItem *item = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
-      hl->addSpacerItem(item);
-      envelope->addWidget(importmidiShowPanel);
-      }
+      // {
+      // importmidiShowPanel = new QFrame;
+      // QHBoxLayout *hl = new QHBoxLayout;
+      // hl->setMargin(0);
+      // hl->setSpacing(0);
+      // importmidiShowPanel->setLayout(hl);
+      // showMidiImportButton = new QPushButton();
+      // showMidiImportButton->setFocusPolicy(Qt::ClickFocus);
+      // importmidiShowPanel->setVisible(false);
+      // connect(showMidiImportButton, SIGNAL(clicked()), SLOT(showMidiImportPanel()));
+      // connect(importmidiPanel, SIGNAL(closeClicked()), importmidiShowPanel, SLOT(show()));
+      // hl->addWidget(showMidiImportButton);
+      // QSpacerItem *item = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
+      // hl->addSpacerItem(item);
+      // envelope->addWidget(importmidiShowPanel);
+      // }
 
       envelope->setSizes(QList<int>({550, 180}));
 
@@ -2045,7 +2045,7 @@ void MuseScore::retranslate()
       viewModeCombo->setItemText(viewModeCombo->findData(int(LayoutMode::LINE)), tr("Continuous View"));
       viewModeCombo->setItemText(viewModeCombo->findData(int(LayoutMode::SYSTEM)), tr("Single Page"));
 
-      showMidiImportButton->setText(tr("Show MIDI import panel"));
+      // showMidiImportButton->setText(tr("Show MIDI import panel"));
 
       Shortcut::retranslate();
       WorkspacesManager::retranslateAll();
@@ -2315,8 +2315,8 @@ void MuseScore::selectionChanged(SelState selectionState)
             pianorollEditor->changeSelection(selectionState);
       if (drumrollEditor)
             drumrollEditor->changeSelection(selectionState);
-      if (timeline())
-            timeline()->changeSelection(selectionState);
+      // if (timeline())
+      //       timeline()->changeSelection(selectionState);
       if (_pianoTools && _pianoTools->isVisible()) {
             if (cs)
                   _pianoTools->changeSelection(cs->selection());
@@ -2500,8 +2500,8 @@ void MuseScore::reloadInstrumentTemplates()
             }
 
       MidiInstr::instrumentTemplatesChanged();
-      if (importmidiPanel)
-            importmidiPanel->instrumentTemplatesChanged();
+      // if (importmidiPanel)
+      //       importmidiPanel->instrumentTemplatesChanged();
       }
 
 //---------------------------------------------------------
@@ -2563,8 +2563,8 @@ void MuseScore::setCurrentScoreView(ScoreView* view)
       cv = view;
       if (cv) {
             ctab = (tab2 && tab2->view() == view) ? tab2 : tab1;
-            if (timeline())
-                  timeline()->setScoreView(cv);
+            // if (timeline())
+                  // timeline()->setScoreView(cv);
             if (cv->score() && (cs != cv->score())) {
                   // exit note entry mode
                   if (cv->noteEntryMode()) {
@@ -2587,7 +2587,7 @@ void MuseScore::setCurrentScoreView(ScoreView* view)
 
                   // set midi import panel
       QString fileName = cs ? cs->importedFilePath() : "";
-      midiPanelOnSwitchToFile(fileName);
+      // midiPanelOnSwitchToFile(fileName);
 
       if (enableExperimental) {
             updateLayer();
@@ -2614,13 +2614,13 @@ void MuseScore::setCurrentScoreView(ScoreView* view)
 #endif
       if (!cs) {
             setWindowTitle(MUSESCORE_NAME_VERSION);
-            if (_navigator && _navigator->widget()) {
-                  navigator()->setScoreView(cv);
-                  }
-            if (timeline()) {
-                  timeline()->setScoreView(cv);
-                  timeline()->setScore(0);
-                  }
+            // if (_navigator && _navigator->widget()) {
+            //       navigator()->setScoreView(cv);
+            //       }
+            // if (timeline()) {
+            //       timeline()->setScoreView(cv);
+            //       timeline()->setScore(0);
+            //       }
             if (_inspector)
                   _inspector->update(0);
             viewModeCombo->setEnabled(false);
@@ -2677,13 +2677,13 @@ void MuseScore::setCurrentScoreView(ScoreView* view)
 
       setPos(cs->inputPos());
       //showMessage(cs->filePath(), 2000);
-      if (_navigator && _navigator->widget()) {
-            navigator()->setScoreView(view);
-            }
-      if (timeline()) {
-            timeline()->setScore(cs);
-            timeline()->setScoreView(view);
-            }
+      // if (_navigator && _navigator->widget()) {
+      //       navigator()->setScoreView(view);
+      //       }
+      // if (timeline()) {
+      //       timeline()->setScore(cs);
+      //       timeline()->setScoreView(view);
+      //       }
       ScoreAccessibility::instance()->updateAccessibilityInfo();
 
       MasterScore* master = cs->masterScore();
@@ -2755,61 +2755,61 @@ void MuseScore::showMessage(const QString& s, int timeout)
 //   midiPanel
 //---------------------------------------------------------
 
-void MuseScore::midiPanelOnSwitchToFile(const QString &file)
-      {
-      bool isMidiFile = ImportMidiPanel::isMidiFile(file);
-      if (isMidiFile) {
-            importmidiPanel->setMidiFile(file);
-            if (importmidiPanel->isPreferredVisible())
-                  importmidiPanel->setVisible(true);
-            }
-      else
-            importmidiPanel->setVisible(false);
-      importmidiShowPanel->setVisible(!importmidiPanel->isPreferredVisible() && isMidiFile);
-      }
+// void MuseScore::midiPanelOnSwitchToFile(const QString &file)
+//       {
+//       bool isMidiFile = ImportMidiPanel::isMidiFile(file);
+//       if (isMidiFile) {
+//             importmidiPanel->setMidiFile(file);
+//             if (importmidiPanel->isPreferredVisible())
+//                   importmidiPanel->setVisible(true);
+//             }
+//       else
+//             importmidiPanel->setVisible(false);
+//       importmidiShowPanel->setVisible(!importmidiPanel->isPreferredVisible() && isMidiFile);
+//       }
 
 //---------------------------------------------------------
 //   midiPanelOnCloseFile
 //---------------------------------------------------------
 
-void MuseScore::midiPanelOnCloseFile(const QString &file)
-      {
-      if (ImportMidiPanel::isMidiFile(file))
-            importmidiPanel->excludeMidiFile(file);
-      }
+// void MuseScore::midiPanelOnCloseFile(const QString &file)
+//       {
+//       if (ImportMidiPanel::isMidiFile(file))
+//             importmidiPanel->excludeMidiFile(file);
+//       }
 
 //---------------------------------------------------------
 //   allowShowMidiPanel
 //---------------------------------------------------------
 
-void MuseScore::allowShowMidiPanel(const QString &file)
-      {
-      if (ImportMidiPanel::isMidiFile(file))
-            importmidiPanel->setPreferredVisible(true);
-      }
+// void MuseScore::allowShowMidiPanel(const QString &file)
+//       {
+//       if (ImportMidiPanel::isMidiFile(file))
+//             importmidiPanel->setPreferredVisible(true);
+//       }
 
 //---------------------------------------------------------
 //   setMidiReopenInProgress
 //---------------------------------------------------------
 
-void MuseScore::setMidiReopenInProgress(const QString &file)
-      {
-      if (ImportMidiPanel::isMidiFile(file))
-            importmidiPanel->setReopenInProgress();
-      }
+// void MuseScore::setMidiReopenInProgress(const QString &file)
+//       {
+//       if (ImportMidiPanel::isMidiFile(file))
+//             importmidiPanel->setReopenInProgress();
+//       }
 
 //---------------------------------------------------------
 //   showMidiImportPanel
 //---------------------------------------------------------
 
-void MuseScore::showMidiImportPanel()
-      {
-      importmidiPanel->setPreferredVisible(true);
-      QString fileName = cs ? cs->importedFilePath() : "";
-      if (ImportMidiPanel::isMidiFile(fileName))
-            importmidiPanel->setVisible(true);
-      importmidiShowPanel->hide();
-      }
+// void MuseScore::showMidiImportPanel()
+//       {
+//       importmidiPanel->setPreferredVisible(true);
+//       QString fileName = cs ? cs->importedFilePath() : "";
+//       if (ImportMidiPanel::isMidiFile(fileName))
+//             importmidiPanel->setVisible(true);
+//       importmidiShowPanel->hide();
+//       }
 
 //---------------------------------------------------------
 //   dragEnterEvent
@@ -3246,7 +3246,7 @@ void MuseScore::removeTab(int i)
       int idx1      = tab1->currentIndex();
       bool firstTab = tab1->view(idx1) == cv;
 
-      midiPanelOnCloseFile(score->importedFilePath());
+      // midiPanelOnCloseFile(score->importedFilePath());
       scoreList.removeAt(i);
       scoreWasShown.remove(score);
 
@@ -4398,22 +4398,22 @@ void MuseScore::changeState(ScoreState val)
             if (e->isTextBase()) {
                   textTools()->updateTools(cv->getEditData());
                   if (!(e->isFiguredBass() || e->isHarmony())) {  // do not show text tools for f.b.
-                        if (timelineScrollArea() && timelineScrollArea()->isVisible()) {
-                              if (dockWidgetArea(timelineScrollArea()) != dockWidgetArea(textTools()) || timelineScrollArea()->isFloating()) {
-                                    QSizePolicy policy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-                                    textTools()->widget()->setSizePolicy(policy);
-                                    }
-                              else {
-                                    QSizePolicy policy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-                                    textTools()->widget()->setSizePolicy(policy);
-                                    }
-                              }
-                        else {
-                              QSizePolicy policy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-                              textTools()->widget()->setSizePolicy(policy);
-                              }
-                        if (timelineScrollArea())
-                              splitDockWidget(textTools(), timelineScrollArea(), Qt::Vertical);
+                        // if (timelineScrollArea() && timelineScrollArea()->isVisible()) {
+                        //       if (dockWidgetArea(timelineScrollArea()) != dockWidgetArea(textTools()) || timelineScrollArea()->isFloating()) {
+                        //             QSizePolicy policy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+                        //             textTools()->widget()->setSizePolicy(policy);
+                        //             }
+                        //       else {
+                        //             QSizePolicy policy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+                        //             textTools()->widget()->setSizePolicy(policy);
+                        //             }
+                        //       }
+                        // else {
+                        //       QSizePolicy policy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+                        //       textTools()->widget()->setSizePolicy(policy);
+                        //       }
+                        // if (timelineScrollArea())
+                        //       splitDockWidget(textTools(), timelineScrollArea(), Qt::Vertical);
                         textTools()->show();
                         }
                   }
@@ -5363,8 +5363,8 @@ void MuseScore::scorePageLayoutChanged()
       {
       if (mainWindow) {
             mainWindow->setOrientation(MScore::verticalOrientation() ? Qt::Horizontal : Qt::Vertical);
-            if (navigatorScrollArea())
-                  navigatorScrollArea()->orientationChanged();
+            // if (navigatorScrollArea())
+            //       navigatorScrollArea()->orientationChanged();
             }
       }
 
@@ -5893,8 +5893,8 @@ void MuseScore::endCmd()
 #ifdef SCRIPT_INTERFACE
       getPluginEngine()->beginEndCmd(this);
 #endif
-      if (timeline())
-            timeline()->updateGrid();
+      // if (timeline())
+      //       timeline()->updateGrid();
       if (MScore::_error != MS_NO_ERROR)
             showError();
       if (cs) {
@@ -5902,7 +5902,7 @@ void MuseScore::endCmd()
             updateInputState(cs);
             updateUndoRedo();
             dirtyChanged(cs);
-            scoreCmpTool->updateDiff();
+            // scoreCmpTool->updateDiff();
             Element* e = cs->selection().element();
 
             // For multiple notes selected check if they all have same pitch and tuning
@@ -6160,11 +6160,13 @@ void MuseScore::cmd(QAction* a, const QString& cmd)
       else if (cmd == "toggle-playpanel")
             showPlayPanel(a->isChecked());
       else if (cmd == "toggle-navigator")
-            showNavigator(a->isChecked());
+            // showNavigator(a->isChecked());
+            {}
       else if (cmd == "toggle-timeline")
             showTimeline(a->isChecked());
       else if (cmd == "toggle-midiimportpanel")
-            importmidiPanel->setVisible(a->isChecked());
+            // importmidiPanel->setVisible(a->isChecked());
+            {}
       else if (cmd == "toggle-mixer")
             showMixer(a->isChecked());
       else if (cmd == "synth-control")
@@ -6223,7 +6225,8 @@ void MuseScore::cmd(QAction* a, const QString& cmd)
       else if (cmd == "toggle-piano")
             showPianoKeyboard(a->isChecked());
       else if (cmd == "toggle-scorecmp-tool")
-            reDisplayDockWidget(scoreCmpTool, a->isChecked());
+            // reDisplayDockWidget(scoreCmpTool, a->isChecked());
+            {}
 #ifdef MSCORE_UNSTABLE
       else if (cmd == "toggle-script-recorder")
             scriptRecorder->setVisible(a->isChecked());
@@ -6454,25 +6457,25 @@ void MuseScore::openExternalLink(const QString& url)
 //   navigator
 //---------------------------------------------------------
 
-Navigator* MuseScore::navigator() const
-      {
-      return _navigator ? static_cast<Navigator*>(_navigator->widget()) : 0;
-      }
+// Navigator* MuseScore::navigator() const
+//       {
+//       return _navigator ? static_cast<Navigator*>(_navigator->widget()) : 0;
+//       }
 
 //---------------------------------------------------------
 //   timeline
 //---------------------------------------------------------
 
-Timeline* MuseScore::timeline() const
-      {
-      if (_timeline) {
-            QSplitter* s = static_cast<QSplitter *>(_timeline->widget());
-            if (s && s->count() > 0)
-                  return _timeline ? static_cast<Timeline*>(s->widget(1)) : 0;
-            return 0;
-            }
-      return 0;
-      }
+// Timeline* MuseScore::timeline() const
+//       {
+//       if (_timeline) {
+//             QSplitter* s = static_cast<QSplitter *>(_timeline->widget());
+//             if (s && s->count() > 0)
+//                   return _timeline ? static_cast<Timeline*>(s->widget(1)) : 0;
+//             return 0;
+//             }
+//       return 0;
+//       }
 
 //---------------------------------------------------------
 //   getScriptRecorder
@@ -6656,8 +6659,8 @@ void MuseScore::showDrumTools(const Drumset* drumset, Staff* staff)
                   _drumTools = new DrumTools(this);
                   addDockWidget(Qt::BottomDockWidgetArea, _drumTools);
                   }
-            if (timelineScrollArea())
-                  splitDockWidget(_drumTools, timelineScrollArea(), Qt::Vertical);
+            // if (timelineScrollArea())
+            //       splitDockWidget(_drumTools, timelineScrollArea(), Qt::Vertical);
             _drumTools->setDrumset(cs, staff, drumset);
             _drumTools->show();
             }
