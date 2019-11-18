@@ -311,19 +311,19 @@ Palette* MuseScore::newLinesPalette()
 
 void MuseScore::showPalette(bool visible)
       {
-      QAction* a = getAction("toggle-palette");
-      if (!paletteWidget) {
-            WorkspacesManager::currentWorkspace()->read();
-            preferencesChanged();
-            updateIcons();
+      // QAction* a = getAction("toggle-palette");
+      // if (!paletteWidget) {
+      //       WorkspacesManager::currentWorkspace()->read();
+      //       preferencesChanged();
+      //       updateIcons();
 
-            paletteWidget = new PaletteWidget(getPaletteWorkspace(), getQmlUiEngine(), this);
-            a = getAction("toggle-palette");
-            connect(paletteWidget, &PaletteWidget::visibilityChanged, a, &QAction::setChecked);
-            addDockWidget(Qt::LeftDockWidgetArea, paletteWidget);
-            }
-      reDisplayDockWidget(paletteWidget, visible);
-      a->setChecked(visible);
+      //       paletteWidget = new PaletteWidget(getPaletteWorkspace(), getQmlUiEngine(), this);
+      //       a = getAction("toggle-palette");
+      //       connect(paletteWidget, &PaletteWidget::visibilityChanged, a, &QAction::setChecked);
+      //       addDockWidget(Qt::LeftDockWidgetArea, paletteWidget);
+      //       }
+      // reDisplayDockWidget(paletteWidget, visible);
+      // a->setChecked(visible);
       }
 
 //---------------------------------------------------------
