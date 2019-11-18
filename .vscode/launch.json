@@ -30,6 +30,30 @@
             "externalConsole": false,
             "MIMode": "lldb",
             // "preLaunchTask": "Build macOS"
+        },
+        {
+            "name": "Debug WASM on macOS",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build.web/libmscore.app/Contents/MacOS/libmscore",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build.web",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        },
+        {
+            "name": "Debug WASM on macOS (Qt 5.13)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build.qt513-mac/libmscore.app/Contents/MacOS/libmscore",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build.qt513-mac",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
         }
     ]
 }

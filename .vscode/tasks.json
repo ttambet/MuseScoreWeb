@@ -28,10 +28,34 @@
             "problemMatcher": {
                 "base": "$gcc",
                 "fileLocation": ["relative", "${workspaceRoot}/build.wasm"]
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Build WASM on macOS for testing",
+            "command": "set -o pipefail; qmake ../libmscore.wasm-mac-test.pro && make -j8  2>&1 | tee build.log",
+            "options": {
+                "cwd": "${workspaceFolder}/build.web"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": ["relative", "${workspaceRoot}/build.web"]
             },
             "group": {
                 "kind": "build",
                 "isDefault": true
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Build WASM on macOS for testing (Qt 5.13)",
+            "command": "set -o pipefail; ~/Qt/5.13.2/clang_64/bin/qmake ../libmscore.wasm-mac-test.pro && make -j8  2>&1 | tee build.log",
+            "options": {
+                "cwd": "${workspaceFolder}/build.qt513-mac"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": ["relative", "${workspaceRoot}/build.qt513-mac"]
             }
         }
     ],
