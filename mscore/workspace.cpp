@@ -928,9 +928,10 @@ void Workspace::readGlobalMenuBar()
                               QMenuBar* mb = mscore->menuBar();
                               const QObjectList menus(mb->children()); // need a copy
                               for (QObject* m : menus) {
-                                    if (qobject_cast<QMenu*>(m)) {
-                                          m->setParent(nullptr);
-                                          m->deleteLater();
+                                    QMenu* mAsMenu = qobject_cast<QMenu*>(m);
+                                    if (mAsMenu) {
+                                          mAsMenu->setParent(nullptr);
+                                          mAsMenu->deleteLater();
                                           }
                                     }
                               mb->clear();
