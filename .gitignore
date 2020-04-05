@@ -50,3 +50,7 @@ VERSION
 
 build.web
 build.wasm
+build.qt513-mac
+build.qt515-mac
+build.wasm.qt514
+.mypy_cache
