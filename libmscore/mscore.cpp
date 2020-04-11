@@ -315,8 +315,9 @@ void MScore::init()
       //  initialize styles
       //
       _baseStyle.precomputeValues();
-      QSettings s;
-      QString defStyle = s.value("score/style/defaultStyleFile").toString();
+      // QSettings s;
+      // QString defStyle = s.value("score/style/defaultStyleFile").toString();
+      QString defStyle = "";
       if (!(MScore::testMode || defStyle.isEmpty())) {
             QFile f(defStyle);
             if (f.open(QIODevice::ReadOnly)) {
@@ -326,7 +327,8 @@ void MScore::init()
                   }
             }
       _defaultStyle.precomputeValues();
-      QString partStyle = s.value("score/style/partStyleFile").toString();
+      // QString partStyle = s.value("score/style/partStyleFile").toString();
+      QString partStyle = "";
       if (!(MScore::testMode || partStyle.isEmpty())) {
             QFile f(partStyle);
             if (f.open(QIODevice::ReadOnly)) {

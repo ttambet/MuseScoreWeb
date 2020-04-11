@@ -202,7 +202,7 @@ static bool scoresOnCommandline { false };
 static QList<QTranslator*> translatorList;
 
 QString localeName;
-bool useFactorySettings = false;
+bool useFactorySettings = true;
 bool deletePreferences = false;
 QString styleName;
 QString revision;
@@ -7455,7 +7455,7 @@ int main(int argc, char* av[])
                   parser.showHelp(EXIT_FAILURE);
             }
       deletePreferences = parser.isSet("F");
-      useFactorySettings = (deletePreferences || parser.isSet("R"));
+      // useFactorySettings = (deletePreferences || parser.isSet("R"));
       enableExperimental = parser.isSet("e");
       if (parser.isSet("c")) {
             QString path = parser.value("c");
@@ -7569,10 +7569,10 @@ int main(int argc, char* av[])
       if (useFactorySettings) {
             if (deletePreferences)
                   QDir(dataPath).removeRecursively();
-            QSettings settings;
-            QFile::remove(settings.fileName() + ".lock"); //forcibly remove lock
-            QFile::remove(settings.fileName());
-            settings.clear();
+            // QSettings settings;
+            // QFile::remove(settings.fileName() + ".lock"); //forcibly remove lock
+            // QFile::remove(settings.fileName());
+            // settings.clear();
             }
 
       // create local plugin directory
@@ -7594,7 +7594,7 @@ int main(int argc, char* av[])
       setMscoreLocale(localeName);
 
       Shortcut::init();
-      preferences.init();
+      preferences.init(true);
 
       // QNetworkProxyFactory::setUseSystemConfiguration(true);
 
@@ -7752,7 +7752,7 @@ int main(int argc, char* av[])
                   delete sw;
 
                   // reinitialize preferences so some default values are calculated based on chosen language
-                  preferences.init();
+                  preferences.init(true);
                   // store preferences with locale-dependent default values
                   // so that the values from first start will be used later
                   preferences.setToDefaultValue(PREF_APP_PATHS_MYSCORES);

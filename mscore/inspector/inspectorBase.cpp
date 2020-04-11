@@ -518,15 +518,16 @@ void InspectorBase::mapSignals(const std::vector<InspectorItem>& il, const std::
                               title->setChecked(visible);
                               title->setArrowType(visible ? Qt::DownArrow : Qt::RightArrow);
                               QString key = title->parent()->objectName();
-                              QSettings s;
-                              s.setValue(QString("inspector/%1_visible").arg(key), visible);
+                              // QSettings s;
+                              // s.setValue(QString("inspector/%1_visible").arg(key), visible);
                               }});
                   title->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
                   title->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
                   title->setStyleSheet("font: bold;");
-                  QSettings s;
-                  QString key = title->parent()->objectName();
-                  bool visible = s.value(QString("inspector/%1_visible").arg(key), true).toBool();
+                  // QSettings s;
+                  // QString key = title->parent()->objectName();
+                  // bool visible = s.value(QString("inspector/%1_visible").arg(key), true).toBool();
+                  bool visible = true;
                   title->setArrowType(visible ? Qt::DownArrow : Qt::RightArrow);
                   title->setChecked(visible);
                   if (panel)
