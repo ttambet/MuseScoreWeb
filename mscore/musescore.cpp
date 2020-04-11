@@ -3994,6 +3994,7 @@ bool MuseScore::hasToCheckForUpdate()
       //       return ucheck->hasToCheck();
       // else
       // return false;
+      return false;
       }
 
 //---------------------------------------------------------
