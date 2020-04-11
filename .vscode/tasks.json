@@ -21,7 +21,7 @@
         {
             "type": "shell",
             "label": "Build WASM",
-            "command": "set -o pipefail; ~/Qt/5.13.2/wasm_32/bin/qmake ../libmscore.wasm.pro && make -j8  2>&1 | tee build.log",
+            "command": "set -o pipefail; source ~/Documents/code/emsdk/emsdk_env.sh; ~/Qt/5.13.2/wasm_32/bin/qmake ../libmscore.wasm.pro && make -j8  2>&1 | tee build.log",
             "options": {
                 "cwd": "${workspaceFolder}/build.wasm"
             },
@@ -32,8 +32,37 @@
         },
         {
             "type": "shell",
-            "label": "Build WASM on macOS for testing",
-            "command": "set -o pipefail; qmake ../libmscore.wasm-mac-test.pro && make -j8  2>&1 | tee build.log",
+            "label": "Build WASM (Qt 5.14, emsdk 1.39.7)",
+            "command": "set -o pipefail; source ~/Documents/code/emsdk/emsdk_env.sh; ~/Qt/5.14.1/wasm_32/bin/qmake ../libmscore.wasm.pro && make -j8  2>&1 | tee build.log",
+            "options": {
+                "cwd": "${workspaceFolder}/build.wasm.qt514"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": ["relative", "${workspaceRoot}/build.wasm.qt514"]
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Build WASM (Qt 5.15, emsdk 1.39.8)",
+            "command": [
+                "set -o pipefail;",
+                "source ~/Documents/code/emsdk/emsdk_env.sh;",
+                "emsdk activate 1.39.8;",
+                "~/Qt/5.15.0/wasm_32/bin/qmake ../libmscore.wasm.pro && make -j8  2>&1 | tee build.log",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build.wasm.qt515"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": ["relative", "${workspaceRoot}/build.wasm.qt515"]
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Build WASM on macOS for testing (Qt 5.12)",
+            "command": "set -o pipefail; ~/Qt/5.12.4/clang_64/bin/qmake ../libmscore.wasm-mac-test.pro && make -j8  2>&1 | tee build.log",
             "options": {
                 "cwd": "${workspaceFolder}/build.web"
             },
@@ -57,7 +86,19 @@
                 "base": "$gcc",
                 "fileLocation": ["relative", "${workspaceRoot}/build.qt513-mac"]
             }
-        }
+        },
+        {
+            "type": "shell",
+            "label": "Build WASM on macOS for testing (Qt 5.15)",
+            "command": "set -o pipefail; ~/Qt/5.15.0/clang_64/bin/qmake ../libmscore.wasm-mac-test.pro && make -j8  2>&1 | tee build.log",
+            "options": {
+                "cwd": "${workspaceFolder}/build.qt515-mac"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": ["relative", "${workspaceRoot}/build.qt515-mac"]
+            }
+        },
     ],
     "version": "2.0.0"
 }

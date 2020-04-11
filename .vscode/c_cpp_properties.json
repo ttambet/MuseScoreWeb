@@ -4,17 +4,20 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/**",
                 "/usr/local/include/**",
-                "/Users/matan/Qt/5.12.4/clang_64/include/**",
-                "/Users/matan/Qt/5.12.4/Src/qtbase/include/**"
+                "/usr/local/include/**",
+                "/Users/matan/Qt/5.15.0/clang_64/include/**",
+                "/Users/matan/Qt/5.15.0/wasm_32/include/",
+                "/Users/matan/Qt/5.15.0/wasm_32/include/QtGui",
+                "/Users/matan/Qt/5.15.0/clang_64/lib/QtCore.framework/Versions/5/Headers",
+                "${workspaceFolder}/build.qt515-mac"
             ],
+            "forcedInclude": ["${workspaceFolder}/all.h"],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "c++11",
             "intelliSenseMode": "gcc-x64",
-            "compileCommands": "${workspaceFolder}/build.debug/compile_commands.json",
             "browse": {
                 "path": [
                     "${workspaceFolder}/build.debug/",
