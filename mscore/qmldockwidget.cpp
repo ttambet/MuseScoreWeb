@@ -178,17 +178,19 @@ QmlDockWidget::QmlDockWidget(QQmlEngine* e, const QString& title, QWidget* paren
 //   QmlDockWidget::getView
 //---------------------------------------------------------
 
-QQuickView* QmlDockWidget::getView()
+QQuickWidget* QmlDockWidget::getView()
       {
       if (!_view) {
+            QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
             if (engine)
-                  _view = new MsQuickView(engine, nullptr);
+                  _view = new QQuickWidget(engine, nullptr);
             else
-                  _view = new MsQuickView();
+                  _view = new QQuickWidget();
 
-            QWidget* container = QWidget::createWindowContainer(_view);
-            container->setFocusPolicy(Qt::TabFocus); // or Qt::StrongFocus?
-            setWidget(container);
+            // QWidget* container = QWidget::createWindowContainer(_view, this);
+            // container->setFocusPolicy(Qt::TabFocus); // or Qt::StrongFocus?
+            // container->setSizePolicy(Qt::);
+            setWidget(_view);
             }
       return _view;
       }
@@ -199,8 +201,8 @@ QQuickView* QmlDockWidget::getView()
 
 void QmlDockWidget::ensureQmlViewFocused()
       {
-      if (_view && !_view->activeFocusItem())
-            widget()->setFocus();
+      // if (_view && !_view->activeFocusItem())
+            // widget()->setFocus();
       }
 
 //---------------------------------------------------------
@@ -209,8 +211,8 @@ void QmlDockWidget::ensureQmlViewFocused()
 
 void QmlDockWidget::setupStyle()
       {
-      QQuickView* view = getView();
-      view->setColor(QApplication::palette().color(QPalette::Window));
+      QQuickWidget* view = getView();
+      // view->setColor(QApplication::palette().color(QPalette::Window));
 
       if (qmlStyle)
             qmlStyle->deleteLater();
@@ -242,7 +244,7 @@ QString QmlDockWidget::qmlSourcePrefix()
 
 void QmlDockWidget::setSource(const QUrl& url)
       {
-      QQuickView* view = getView();
+      QQuickWidget* view = getView();
 
       // setupStyle();
 

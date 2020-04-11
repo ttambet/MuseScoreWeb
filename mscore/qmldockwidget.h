@@ -122,11 +122,11 @@ class QmlDockWidget : public QDockWidget
       {
       Q_OBJECT
 
-      QQuickView* _view = nullptr;
+      QQuickWidget* _view = nullptr;
       QmlStyle* qmlStyle = nullptr;
       QQmlEngine* engine;
 
-      QQuickView* getView();
+      QQuickWidget* getView();
       void setupStyle();
 
    protected:
@@ -143,7 +143,7 @@ class QmlDockWidget : public QDockWidget
       QQmlContext* rootContext() { return getView()->rootContext(); }
       QQuickItem* rootObject() { return getView()->rootObject(); }
 
-      const QQuickView* view() const { return _view; }
+      const QQuickWidget* view() const { return _view; }
 
       void changeEvent(QEvent* evt) override;
       void resizeEvent(QResizeEvent* evt) override;
