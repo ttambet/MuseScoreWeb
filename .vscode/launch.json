@@ -51,9 +51,35 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build.qt513-mac",
-            "environment": [],
+            "environment": [
+                {"name": "DYLD_IMAGE_SUFFIX", "value": "_debug"},
+                {"name": "QT_LOGGING_RULES", "value": "*.debug=true;*=true;qt.quick.controls.style=true;qt.quick.controls.style.*=true"}
+            ],
             "externalConsole": false,
-            "MIMode": "lldb"
+            "MIMode": "lldb",
+            "setupCommands": [
+                {"text": "command script import ~/Documents/code/lldb-qt-formatters/QtFormatters.py"},
+                {"text": "command source ~/Documents/code/lldb-qt-formatters/QtFormatters.lldb"}
+            ]
+        },
+        {
+            "name": "Debug WASM on macOS (Qt 5.15)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build.qt515-mac/libmscore.app/Contents/MacOS/libmscore",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build.qt515-mac",
+            "environment": [
+                {"name": "DYLD_IMAGE_SUFFIX", "value": "_debug"},
+                {"name": "QT_LOGGING_RULES", "value": "*.debug=true;*=true;qt.quick.controls.style=true;qt.quick.controls.style.*=true"}
+            ],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "setupCommands": [
+                {"text": "command script import ~/Documents/code/lldb-qt-formatters/QtFormatters.py"},
+                {"text": "command source ~/Documents/code/lldb-qt-formatters/QtFormatters.lldb"}
+            ]
         }
     ]
 }
