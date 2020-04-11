@@ -50,7 +50,7 @@ ListView {
             paletteModel.setFilterFixedString(filter);
     }
 
-    property bool enableAnimations: true
+    // property bool enableAnimations: true
 
     function insertCustomPalette(idx) {
         if (paletteTree.paletteController.insertNewItem(paletteTreeDelegateModel.rootIndex, idx))
@@ -257,7 +257,7 @@ ListView {
 
             text: model.display
 
-            width: parent.width
+            width: parent == null ? 200 : parent.width
 
             Drag.active: paletteHeaderDragArea.drag.active
             Drag.dragType: Drag.Automatic
