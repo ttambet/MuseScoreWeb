@@ -212,7 +212,7 @@ void QmlDockWidget::ensureQmlViewFocused()
 void QmlDockWidget::setupStyle()
       {
       QQuickWidget* view = getView();
-      // view->setColor(QApplication::palette().color(QPalette::Window));
+      view->setClearColor(QApplication::palette().color(QPalette::Window));
 
       if (qmlStyle)
             qmlStyle->deleteLater();
