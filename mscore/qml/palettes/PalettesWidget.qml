@@ -18,10 +18,10 @@
 //=============================================================================
 
 import QtQuick 2.8
-// import QtQuick.Controls 2.1
-// import QtQuick.Window 2.2
-// import MuseScore.Palette 3.3
-// import MuseScore.Utils 3.3
+import QtQuick.Controls 2.1
+import QtQuick.Window 2.2
+import MuseScore.Palette 3.3
+import MuseScore.Utils 3.3
 
 // TODO: make some properties 'property alias`?
 // and `readonly property`?
@@ -29,71 +29,71 @@ import QtQuick 2.8
 Item {
     id: palettesWidget
 
-    // readonly property PaletteWorkspace paletteWorkspace: mscore.paletteWorkspace
+    readonly property PaletteWorkspace paletteWorkspace: mscore.paletteWorkspace
 
-    // readonly property bool hasFocus: Window.activeFocusItem
+    readonly property bool hasFocus: Window.activeFocusItem
 
-    // implicitHeight: 4 * palettesWidgetHeader.implicitHeight
+    implicitHeight: 4 * palettesWidgetHeader.implicitHeight
     // implicitHeight: 400
-    // implicitWidth: paletteTree.implicitWidth
+    implicitWidth: paletteTree.implicitWidth
     // implicitWidth: 200
-    width: 200
-    height: 300
+    // width: 200
+    // height: 300
 
-    // enabled: mscore.palettesEnabled
+    enabled: mscore.palettesEnabled
 
-    // function applyCurrentPaletteElement() {
-    //     paletteTree.applyCurrentElement();
-    // }
-
-    // FocusChainBreak {}
-
-    // PalettesWidgetHeader {
-    //     id: palettesWidgetHeader
-
-    //     paletteWorkspace: palettesWidget.paletteWorkspace
-
-    //     anchors {
-    //         top: parent.top
-    //         left: parent.left
-    //         leftMargin: 12
-    //         right: parent.right
-    //         rightMargin: 12
-    //     }
-
-    //     onAddCustomPaletteRequested: paletteTree.insertCustomPalette(0);
-    // }
-
-    // ToolSeparator {
-    //     id: separator
-    //     orientation: Qt.Horizontal
-    //     anchors.top: palettesWidgetHeader.bottom
-    //     width: parent.width
-    // }
-
-    // PaletteTree {
-    //     id: paletteTree
-    //     clip: true
-    //     paletteWorkspace: palettesWidget.paletteWorkspace
-    //     height: 400
-    //     width: 200
-
-    //     // filter: palettesWidgetHeader.cellFilter
-    //     // enableAnimations: !palettesWidgetHeader.searching
-
-    //     // anchors {
-    //     //     top: separator.bottom
-    //     //     bottom: parent.bottom
-    //     //     left: parent.left
-    //     //     right: parent.right
-    //     // }
-    // }
-    Rectangle {
-        width: 100
-        height: 100
-        color: "red"
-        border.color: "black"
-        border.width: 5
-        radius: 10
+    function applyCurrentPaletteElement() {
+        paletteTree.applyCurrentElement();
     }
+
+    FocusChainBreak {}
+
+    PalettesWidgetHeader {
+        id: palettesWidgetHeader
+
+        paletteWorkspace: palettesWidget.paletteWorkspace
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            leftMargin: 12
+            right: parent.right
+            rightMargin: 12
+        }
+
+        onAddCustomPaletteRequested: paletteTree.insertCustomPalette(0);
+    }
+
+    ToolSeparator {
+        id: separator
+        orientation: Qt.Horizontal
+        anchors.top: palettesWidgetHeader.bottom
+        width: parent.width
+    }
+
+    PaletteTree {
+        id: paletteTree
+        clip: true
+        paletteWorkspace: palettesWidget.paletteWorkspace
+        // height: 400
+        // width: 200
+
+        filter: palettesWidgetHeader.cellFilter
+        enableAnimations: !palettesWidgetHeader.searching
+
+        anchors {
+            top: separator.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+    }
+    // Rectangle {
+    //     width: 100
+    //     height: 100
+    //     color: "red"
+    //     border.color: "black"
+    //     border.width: 5
+    //     radius: 10
+    // }
 }

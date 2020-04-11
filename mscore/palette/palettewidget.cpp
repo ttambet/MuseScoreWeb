@@ -74,14 +74,14 @@ PaletteWidget::PaletteWidget(PaletteWorkspace* w, QQmlEngine* e, QWidget* parent
 
       // const bool useSinglePalette = preferences.getBool(PREF_APP_USESINGLEPALETTE);
 
-      // QQmlContext* ctx = rootContext();
-      // Q_ASSERT(ctx);
+      QQmlContext* ctx = rootContext();
+      Q_ASSERT(ctx);
 
-      // QmlNativeToolTip* tooltip = new QmlNativeToolTip(widget());
+      QmlNativeToolTip* tooltip = new QmlNativeToolTip(widget());
 
-      // qmlInterface = new PaletteQmlInterface(w, tooltip, isEnabled(), this);
-      // setupStyle();
-      // ctx->setContextProperty("mscore", qmlInterface);
+      qmlInterface = new PaletteQmlInterface(w, tooltip, isEnabled(), this);
+      setupStyle();
+      ctx->setContextProperty("mscore", qmlInterface);
 
       setSource(QUrl(qmlSourcePrefix() + "qml/palettes/PalettesWidget.qml"));
       
@@ -93,7 +93,7 @@ PaletteWidget::PaletteWidget(PaletteWorkspace* w, QQmlEngine* e, QWidget* parent
       // connect(singlePaletteAction, &QAction::toggled, this, &PaletteWidget::setSinglePalette);
 
       // setContextMenuPolicy(Qt::ActionsContextMenu);
-      // setObjectName("palette-widget");
+      setObjectName("palette-widget");
       setAllowedAreas(Qt::DockWidgetAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea));
       // setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
       setFeatures(QDockWidget::NoDockWidgetFeatures);

@@ -50,7 +50,7 @@ ListView {
             paletteModel.setFilterFixedString(filter);
     }
 
-    // property bool enableAnimations: true
+    property bool enableAnimations: true
 
     function insertCustomPalette(idx) {
         if (paletteTree.paletteController.insertNewItem(paletteTreeDelegateModel.rootIndex, idx))
