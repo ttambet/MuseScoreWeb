@@ -201,8 +201,8 @@ QQuickWidget* QmlDockWidget::getView()
 
 void QmlDockWidget::ensureQmlViewFocused()
       {
-      // if (_view && !_view->activeFocusItem())
-            // widget()->setFocus();
+      if (_view && !_view->activeFocusItem())
+            widget()->setFocus();
       }
 
 //---------------------------------------------------------

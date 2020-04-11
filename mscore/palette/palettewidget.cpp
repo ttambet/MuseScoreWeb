@@ -72,7 +72,7 @@ PaletteWidget::PaletteWidget(PaletteWorkspace* w, QQmlEngine* e, QWidget* parent
       {
       registerQmlTypes();
 
-      // const bool useSinglePalette = preferences.getBool(PREF_APP_USESINGLEPALETTE);
+      const bool useSinglePalette = preferences.getBool(PREF_APP_USESINGLEPALETTE);
 
       QQmlContext* ctx = rootContext();
       Q_ASSERT(ctx);
@@ -86,31 +86,18 @@ PaletteWidget::PaletteWidget(PaletteWorkspace* w, QQmlEngine* e, QWidget* parent
       setSource(QUrl(qmlSourcePrefix() + "qml/palettes/PalettesWidget.qml"));
       
 
-      // singlePaletteAction = new QAction(this);
-      // singlePaletteAction->setCheckable(true);
-      // singlePaletteAction->setChecked(useSinglePalette);
-      // addAction(singlePaletteAction);
-      // connect(singlePaletteAction, &QAction::toggled, this, &PaletteWidget::setSinglePalette);
+      singlePaletteAction = new QAction(this);
+      singlePaletteAction->setCheckable(true);
+      singlePaletteAction->setChecked(useSinglePalette);
+      addAction(singlePaletteAction);
+      connect(singlePaletteAction, &QAction::toggled, this, &PaletteWidget::setSinglePalette);
 
-      // setContextMenuPolicy(Qt::ActionsContextMenu);
+      setContextMenuPolicy(Qt::ActionsContextMenu);
       setObjectName("palette-widget");
       setAllowedAreas(Qt::DockWidgetAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea));
-      // setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
-      setFeatures(QDockWidget::NoDockWidgetFeatures);
-      // QScrollArea* sa = new QScrollArea;
-      // sa->setFrameShape(QFrame::NoFrame);
-      // sa->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-      // sa->setWidgetResizable(true);
+      setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
 
-//      setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-//      sa->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
-
-      // setWidget(sa);
-      // sa->setFocusPolicy(Qt::NoFocus);
-//      retranslate();
-      setWindowTitle("Poopy2");
-
-      // retranslate();
+      retranslate();
       }
 
 PaletteWidget::PaletteWidget(PaletteWorkspace* w, QWidget* parent, Qt::WindowFlags flags)
@@ -175,13 +162,13 @@ void PaletteWidget::applyCurrentPaletteElement()
 void PaletteWidget::showEvent(QShowEvent* evt)
       {
       QDockWidget::showEvent(evt);
-      // if (!wasShown) {
-      //       wasShown = true;
-      //       if (mscoreFirstStart) {
-      //             // set default width for palettes
-      //             mscore->resizeDocks({ this }, { initialViewSize().width() }, Qt::Horizontal);
-      //             }
-      //       }
+      if (!wasShown) {
+            wasShown = true;
+            if (mscoreFirstStart) {
+                  // set default width for palettes
+                  mscore->resizeDocks({ this }, { initialViewSize().width() }, Qt::Horizontal);
+                  }
+            }
       }
 
 //---------------------------------------------------------
@@ -199,7 +186,7 @@ void PaletteWidget::changeEvent(QEvent* evt)
                   setupStyle();
                   break;
             case QEvent::EnabledChange:
-                  // qmlInterface->setPalettesEnabled(isEnabled());
+                  qmlInterface->setPalettesEnabled(isEnabled());
                   break;
             default:
                   break;

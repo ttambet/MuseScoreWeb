@@ -34,11 +34,7 @@ Item {
     readonly property bool hasFocus: Window.activeFocusItem
 
     implicitHeight: 4 * palettesWidgetHeader.implicitHeight
-    // implicitHeight: 400
     implicitWidth: paletteTree.implicitWidth
-    // implicitWidth: 200
-    // width: 200
-    // height: 300
 
     enabled: mscore.palettesEnabled
 
@@ -75,8 +71,6 @@ Item {
         id: paletteTree
         clip: true
         paletteWorkspace: palettesWidget.paletteWorkspace
-        // height: 400
-        // width: 200
 
         filter: palettesWidgetHeader.cellFilter
         enableAnimations: !palettesWidgetHeader.searching
@@ -88,12 +82,4 @@ Item {
             right: parent.right
         }
     }
-    // Rectangle {
-    //     width: 100
-    //     height: 100
-    //     color: "red"
-    //     border.color: "black"
-    //     border.width: 5
-    //     radius: 10
-    // }
 }
