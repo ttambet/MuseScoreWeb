@@ -257,7 +257,7 @@ void QmlDockWidget::setSource(const QUrl& url)
             engine->clearComponentCache();
             view->setSource(url);
             }
-      // view->setResizeMode(QQuickView::SizeRootObjectToView);
+      view->setResizeMode(QQuickWidget::SizeRootObjectToView);
       }
 
 //---------------------------------------------------------
