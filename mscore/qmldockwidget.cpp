@@ -59,8 +59,8 @@ void FocusChainBreak::focusInEvent(QFocusEvent* evt)
 //   MsQuickView
 //---------------------------------------------------------
 
-MsQuickView::MsQuickView(const QUrl& source, QWindow* parent)
-   : QQuickView(parent) // init() should be called before setting source
+MsQuickView::MsQuickView(const QUrl& source, QWidget* parent)
+   : QQuickWidget(parent) // init() should be called before setting source
       {
       init();
       setSource(source);
@@ -73,7 +73,7 @@ MsQuickView::MsQuickView(const QUrl& source, QWindow* parent)
 void MsQuickView::init()
       {
       registerQmlTypes();
-      connect(this, &QQuickView::statusChanged, this, &MsQuickView::onStatusChanged);
+      connect(this, &QQuickWidget::statusChanged, this, &MsQuickView::onStatusChanged);
       }
 
 //---------------------------------------------------------
@@ -99,9 +99,9 @@ void MsQuickView::registerQmlTypes()
 //   MsQuickView::onStatusChanged
 //---------------------------------------------------------
 
-void MsQuickView::onStatusChanged(QQuickView::Status status)
+void MsQuickView::onStatusChanged(QQuickWidget::Status status)
       {
-      if (status == QQuickView::Ready) {
+      if (status == QQuickWidget::Ready) {
             FocusChainBreak* fb = rootObject()->findChild<FocusChainBreak*>();
             if (fb)
                   connect(fb, &FocusChainBreak::requestFocusTransfer, this, &MsQuickView::transferFocus);
@@ -132,7 +132,7 @@ void MsQuickView::transferFocus(bool forward)
 void MsQuickView::focusInEvent(QFocusEvent* evt)
       {
       prevFocusWidget = QApplication::focusWidget();
-      QQuickView::focusInEvent(evt);
+      QQuickWidget::focusInEvent(evt);
       }
 
 //---------------------------------------------------------
@@ -141,7 +141,7 @@ void MsQuickView::focusInEvent(QFocusEvent* evt)
 
 void MsQuickView::keyPressEvent(QKeyEvent* evt)
       {
-      QQuickView::keyPressEvent(evt);
+      QQuickWidget::keyPressEvent(evt);
       if (evt->isAccepted())
             return;
 
@@ -183,9 +183,9 @@ QQuickWidget* QmlDockWidget::getView()
       if (!_view) {
             QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
             if (engine)
-                  _view = new QQuickWidget(engine, nullptr);
+                  _view = new MsQuickView(engine, nullptr);
             else
-                  _view = new QQuickWidget();
+                  _view = new MsQuickView();
 
             // QWidget* container = QWidget::createWindowContainer(_view, this);
             // container->setFocusPolicy(Qt::TabFocus); // or Qt::StrongFocus?

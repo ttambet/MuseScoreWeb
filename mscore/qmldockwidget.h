@@ -47,7 +47,7 @@ class FocusChainBreak : public QQuickItem
 //   MsQuickView
 //---------------------------------------------------------
 
-class MsQuickView : public QQuickView
+class MsQuickView : public QQuickWidget
       {
       Q_OBJECT
 
@@ -58,14 +58,14 @@ class MsQuickView : public QQuickView
 
    private slots:
       void transferFocus(bool forward);
-      void onStatusChanged(QQuickView::Status);
+      void onStatusChanged(QQuickWidget::Status);
 
    public:
-      MsQuickView(const QUrl& source, QWindow* parent = nullptr);
-      MsQuickView(QQmlEngine* engine, QWindow* parent)
-         : QQuickView(engine, parent) { init(); }
-      MsQuickView(QWindow* parent = nullptr)
-         : QQuickView(parent) { init(); }
+      MsQuickView(const QUrl& source, QWidget* parent = nullptr);
+      MsQuickView(QQmlEngine* engine, QWidget* parent)
+         : QQuickWidget(engine, parent) { init(); }
+      MsQuickView(QWidget* parent = nullptr)
+         : QQuickWidget(parent) { init(); }
 
       void focusInEvent(QFocusEvent*) override;
       void keyPressEvent(QKeyEvent* e) override;
