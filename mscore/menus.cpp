@@ -322,7 +322,7 @@ void MuseScore::showPalette(bool visible)
             connect(paletteWidget, &PaletteWidget::visibilityChanged, a, &QAction::setChecked);
             addDockWidget(Qt::LeftDockWidgetArea, paletteWidget);
             }
-      reDisplayDockWidget(paletteWidget, visible);
+      // reDisplayDockWidget(paletteWidget, visible);
       a->setChecked(visible);
       }
 

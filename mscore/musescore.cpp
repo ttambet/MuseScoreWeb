@@ -7736,20 +7736,20 @@ int main(int argc, char* av[])
       if (!MScore::noGui) {
             if (preferences.getBool(PREF_APP_STARTUP_FIRSTSTART)) {
                   mscoreFirstStart = true;
-                  StartupWizard* sw = new StartupWizard;
-                  // sw->exec();
-                  preferences.setPreference(PREF_APP_STARTUP_FIRSTSTART, false);
-                  preferences.setPreference(PREF_APP_KEYBOARDLAYOUT, sw->keyboardLayout());
-                  preferences.setPreference(PREF_UI_APP_LANGUAGE, sw->language());
-                  setMscoreLocale(sw->language());
-                  Workspace::writeGlobalToolBar();
-                  Workspace::writeGlobalGUIState();
-                  Workspace* targetWorkspace = WorkspacesManager::findByName(sw->workspace());
-                  if (targetWorkspace)
-                        mscore->changeWorkspace(targetWorkspace, true);
+                  // StartupWizard* sw = new StartupWizard;
+                  // // sw->exec();
+                  // preferences.setPreference(PREF_APP_STARTUP_FIRSTSTART, false);
+                  // preferences.setPreference(PREF_APP_KEYBOARDLAYOUT, sw->keyboardLayout());
+                  // preferences.setPreference(PREF_UI_APP_LANGUAGE, sw->language());
+                  // setMscoreLocale(sw->language());
+                  // Workspace::writeGlobalToolBar();
+                  // Workspace::writeGlobalGUIState();
+                  // Workspace* targetWorkspace = WorkspacesManager::findByName(sw->workspace());
+                  // if (targetWorkspace)
+                  //       mscore->changeWorkspace(targetWorkspace, true);
                   
-                  // preferences.setPreference(PREF_UI_APP_STARTUP_SHOWTOURS, sw->showTours());
-                  delete sw;
+                  // // preferences.setPreference(PREF_UI_APP_STARTUP_SHOWTOURS, sw->showTours());
+                  // delete sw;
 
                   // reinitialize preferences so some default values are calculated based on chosen language
                   preferences.init(true);
