@@ -60,8 +60,8 @@ void QmlNativeMenu::open()
       {
       QMenu* menu = createMenu();
       const QPoint globalPos = parentItem()->mapToGlobal(pos).toPoint();
-      menu->exec(globalPos);
-      menu->deleteLater();
+      menu->popup(globalPos);
+      // menu->deleteLater();
       }
 
 //---------------------------------------------------------
@@ -71,8 +71,8 @@ void QmlNativeMenu::open()
 void QmlNativeMenu::popup()
       {
       QMenu* menu = createMenu();
-      menu->exec(QCursor::pos());
-      menu->deleteLater();
+      menu->popup(QCursor::pos());
+      // menu->deleteLater();
       }
 
 } // namespace Ms
