@@ -53,4 +53,6 @@ build.wasm
 build.qt513-mac
 build.qt515-mac
 build.wasm.qt514
+build.wasm.qt515
 .mypy_cache
+dbg
