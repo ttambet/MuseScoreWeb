@@ -84,7 +84,6 @@ PaletteWidget::PaletteWidget(PaletteWorkspace* w, QQmlEngine* e, QWidget* parent
       ctx->setContextProperty("mscore", qmlInterface);
 
       setSource(QUrl(qmlSourcePrefix() + "qml/palettes/PalettesWidget.qml"));
-      
 
       singlePaletteAction = new QAction(this);
       singlePaletteAction->setCheckable(true);
@@ -95,7 +94,6 @@ PaletteWidget::PaletteWidget(PaletteWorkspace* w, QQmlEngine* e, QWidget* parent
       setContextMenuPolicy(Qt::ActionsContextMenu);
       setObjectName("palette-widget");
       setAllowedAreas(Qt::DockWidgetAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea));
-      setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
 
       retranslate();
       }
