@@ -35,6 +35,7 @@
 #include "mscore.h"
 #include "stafftype.h"
 #include "sym.h"
+#include <emscripten.h>
 
 #ifdef OMR
 #include "omr/omr.h"
@@ -362,6 +363,32 @@ void Score::readStaff(XmlReader& e)
             }
       }
 
+
+// Copied from:
+// https://github.com/msorvig/qt-webassembly-examples/blob/fdffc1b/gui_localfiles/qhtml5file_html5.cpp
+void saveFile_wasm(const char *contentPointer, size_t contentLength, const char *fileNameHint)
+{
+      EM_ASM_({
+      // Make the file contents and file name hint accessible to Javascript: convert
+      // the char * to a JavaScript string and create a subarray view into the C heap.
+      const contentPointer = $0;
+      const contentLength = $1;
+      const fileNameHint = UTF8ToString($2);
+      const fileContent = Module.HEAPU8.subarray(contentPointer, contentPointer + contentLength);
+
+      // Create a hidden download link and click it programatically
+      const fileblob = new Blob([fileContent], { type : "application/octet-stream" } );
+      var link = document.createElement("a");
+      document.body.appendChild(link);
+      link.download = fileNameHint;
+      link.href = window.URL.createObjectURL(fileblob);
+      link.style = "display:none";
+      link.click();
+      document.body.removeChild(link);
+
+      }, contentPointer, contentLength, fileNameHint);
+}
+
 //---------------------------------------------------------
 //   saveFile
 ///   If file has generated name, create a modal file save dialog
@@ -371,7 +398,15 @@ void Score::readStaff(XmlReader& e)
 ///   Return true if OK and false on error.
 //---------------------------------------------------------
 
-bool MasterScore::saveFile()
+bool MasterScore::saveFile() {
+      QBuffer buffer;
+      buffer.open(QBuffer::ReadWrite);
+      Score::saveFile(&buffer, false);
+      saveFile_wasm(buffer.data().constData(), buffer.data().size(), "score.mscx");
+      return true;
+}
+
+/*bool MasterScore::saveFile()
       {
       if (readOnly())
             return false;
@@ -480,7 +515,7 @@ bool MasterScore::saveFile()
       info.refresh();
       update();
       return true;
-      }
+      }*/
 
 //---------------------------------------------------------
 //   saveCompressedFile

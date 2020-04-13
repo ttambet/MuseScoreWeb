@@ -402,7 +402,11 @@ bool MuseScore::saveFile()
 //    return true on success
 //---------------------------------------------------------
 
-bool MuseScore::saveFile(MasterScore* score)
+bool MuseScore::saveFile(MasterScore* score) {
+      return score->masterScore()->saveFile();
+}
+
+/*bool MuseScore::saveFile(MasterScore* score)
       {
       if (score == 0)
             return false;
@@ -462,7 +466,7 @@ bool MuseScore::saveFile(MasterScore* score)
             }
       writeSessionFile(false);
       return true;
-      }
+      }*/
 
 //---------------------------------------------------------
 //   createDefaultName
