@@ -694,7 +694,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       void loadFile(const QUrl&);
       QTemporaryFile* getTemporaryScoreFileCopy(const QFileInfo& info, const QString& baseNameTemplate);
       // QNetworkAccessManager* networkManager();
-      virtual Score* openScore(const QString& fn, bool switchTab = true);
+      virtual Score* openScore(const QString& fn, bool switchTab = true, const QByteArray* contents = nullptr);
       bool hasToCheckForUpdate();
       bool hasToCheckForExtensionsUpdate();
       static bool unstable();
@@ -749,7 +749,7 @@ class MuseScore : public QMainWindow, public MuseScoreCore {
       bool savePdf(Score* cs, QPrinter& printer);
 
 
-      MasterScore* readScore(const QString& name);
+      MasterScore* readScore(const QString& name, const QByteArray* contents = nullptr);
 
       bool saveAs(Score*, bool saveCopy = false);
       bool saveSelection(Score*);
@@ -971,7 +971,7 @@ extern Score::FileError importLilypond(MasterScore*, const QString& name);
 extern Score::FileError importBB(MasterScore*, const QString& name);
 extern Score::FileError importCapella(MasterScore*, const QString& name);
 extern Score::FileError importCapXml(MasterScore*, const QString& name);
-extern Score::FileError readScore(MasterScore* score, QString name, bool ignoreVersionError);
+extern Score::FileError readScore(MasterScore* score, QString name, bool ignoreVersionError, const QByteArray* contents = nullptr);
 
 } // namespace Ms
 

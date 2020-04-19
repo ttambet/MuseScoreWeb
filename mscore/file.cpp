@@ -87,6 +87,7 @@
 #include "libmscore/chordlist.h"
 #include "libmscore/mscore.h"
 #include "thirdparty/qzip/qzipreader_p.h"
+#include "libmscore/qhtml5file.h"
 
 
 namespace Ms {
@@ -277,6 +278,17 @@ bool MuseScore::checkDirty(MasterScore* s)
  Handles the GUI's file-open action.
  */
 
+#ifdef Q_OS_WASM
+
+void MuseScore::loadFiles(bool switchTab, bool singleFile)
+{
+      QHtml5File::load(".mscz,.mscx", [=](const QByteArray& contents, const QString& name) {
+            openScore(name, switchTab, &contents);
+      });
+}
+
+#else // Q_OS_WASM
+
 void MuseScore::loadFiles(bool switchTab, bool singleFile)
       {
       QStringList files = getOpenScoreNames(
@@ -305,12 +317,15 @@ void MuseScore::loadFiles(bool switchTab, bool singleFile)
       mscore->tourHandler()->showDelayedWelcomeTour();
       }
 
+#endif // Q_OS_WASM
+
 //---------------------------------------------------------
 //   openScore
 //---------------------------------------------------------
 
-Score* MuseScore::openScore(const QString& fn, bool switchTab)
+Score* MuseScore::openScore(const QString& fn, bool switchTab, const QByteArray* contents)
       {
+      #ifndef Q_OS_WASM
       //
       // make sure we load a file only once
       //
@@ -323,8 +338,9 @@ Score* MuseScore::openScore(const QString& fn, bool switchTab)
                   return 0;
                   }
             }
+      #endif
 
-      MasterScore* score = readScore(fn);
+      MasterScore* score = readScore(fn, contents);
       if (score) {
             score->updateCapo();
             const int tabIdx = appendScore(score);
@@ -339,14 +355,14 @@ Score* MuseScore::openScore(const QString& fn, bool switchTab)
 //   readScore
 //---------------------------------------------------------
 
-MasterScore* MuseScore::readScore(const QString& name)
+MasterScore* MuseScore::readScore(const QString& name, const QByteArray* contents)
       {
       if (name.isEmpty())
             return 0;
 
       MasterScore* score = new MasterScore(MScore::baseStyle());
       // setMidiReopenInProgress(name);
-      Score::FileError rv = Ms::readScore(score, name, false);
+      Score::FileError rv = Ms::readScore(score, name, false, contents);
       if (rv == Score::FileError::FILE_TOO_OLD || rv == Score::FileError::FILE_TOO_NEW || rv == Score::FileError::FILE_CORRUPTED) {
             if (readScoreError(name, rv, true)) {
                   if (rv != Score::FileError::FILE_CORRUPTED) {
@@ -356,7 +372,7 @@ MasterScore* MuseScore::readScore(const QString& name)
                         score = new MasterScore();
                         score->setMovements(new Movements());
                         score->setStyle(MScore::baseStyle());
-                        rv = Ms::readScore(score, name, true);
+                        rv = Ms::readScore(score, name, true, contents);
                         }
                   else
                         rv = Score::FileError::FILE_NO_ERROR;
@@ -376,8 +392,10 @@ MasterScore* MuseScore::readScore(const QString& name)
             return 0;
             }
       // allowShowMidiPanel(name);
+      #ifndef Q_OS_WASM
       if (score)
             addRecentScore(score);
+      #endif
 
       return score;
       }
@@ -2257,21 +2275,30 @@ void importExtension(QString name)
 ///   Import file \a name
 //---------------------------------------------------------
 
-Score::FileError readScore(MasterScore* score, QString name, bool ignoreVersionError)
+Score::FileError readScore(MasterScore* score, QString name, bool ignoreVersionError, const QByteArray* contents)
       {
       ScoreLoad sl;
 
       QFileInfo info(name);
       QString suffix  = info.suffix().toLower();
       score->setName(info.completeBaseName());
+      #ifndef Q_OS_WASM
       score->setImportedFilePath(name);
+      #endif
 
       // Set the default synthesizer state before we read
       if (synti)
             score->setSynthesizerState(synti->state());
 
       if (suffix == "mscz" || suffix == "mscx") {
-            Score::FileError rv = score->loadMsc(name, ignoreVersionError);
+            Score::FileError rv;
+            if (contents == nullptr) {
+                  rv = score->loadMsc(name, ignoreVersionError);
+            } else {
+                  QBuffer buffer(const_cast<QByteArray*>(contents));
+                  buffer.open(QIODevice::ReadOnly);
+                  rv = score->loadMsc(name, &buffer, ignoreVersionError);
+            }
             if (score && score->masterScore()->fileInfo()->path().startsWith(":/"))
                   score->setCreated(true);
             if (rv != Score::FileError::FILE_NO_ERROR)

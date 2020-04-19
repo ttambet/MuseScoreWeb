@@ -1093,3 +1093,10 @@ HEADERS += \
 
 #FORMS += \
 #fluid/fluid_gui.ui \
+
+
+SOURCES += \
+    libmscore/qhtml5file.cpp
+
+HEADERS += \
+    libmscore/qhtml5file.h

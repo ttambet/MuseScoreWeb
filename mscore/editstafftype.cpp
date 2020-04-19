@@ -22,7 +22,7 @@
 
 namespace Ms {
 
-extern Score::FileError readScore(MasterScore* score, QString name, bool ignoreVersionError);
+extern Score::FileError readScore(MasterScore* score, QString name, bool ignoreVersionError, const QByteArray* contents);
 
 const char* g_groupNames[STAFF_GROUP_MAX] = {
       QT_TRANSLATE_NOOP("staff group header name", "STANDARD STAFF"),
