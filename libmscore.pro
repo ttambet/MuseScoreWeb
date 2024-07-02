@@ -3,9 +3,9 @@ CONFIG += debug
 CONFIG += precompiled_header sdk_no_version_check object_parallel_to_source
 PRECOMPILED_HEADER = all.h
 
-QT += gui xml xmlpatterns widgets concurrent svg qml quick quickwidgets help printsupport webenginewidgets
+QT += gui xml xmlpatterns widgets svg qml quick quickwidgets printsupport
 
-LIBS += -L/usr/local/lib -lfreetype -lz -lvorbis -lvorbisfile -framework Cocoa
+LIBS += -L/usr/local/lib -lfreetype -lz -lvorbis -lvorbisfile # -framework Cocoa
 
 INCLUDEPATH += ./libmscore ./thirdparty/freetype/include ./mscore ./thirdparty /usr/local/include ./thirdparty/dtl
 

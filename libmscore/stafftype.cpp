@@ -42,6 +42,10 @@ const char StaffType::groupNames[STAFF_GROUP_MAX][STAFF_GROUP_NAME_MAX_LENGTH] =
 
 const QString StaffType::fileGroupNames[STAFF_GROUP_MAX] = { "pitched", "percussion", "tablature" };
 
+
+
+
+
 //---------------------------------------------------------
 //   StaffType
 //---------------------------------------------------------
@@ -50,8 +54,12 @@ StaffType::StaffType()
       {
       // set reasonable defaults for type-specific members */
       _symRepeat = TablatureSymbolRepeat::NEVER;
-      setDurationFontName(_durationFonts[0].displayName);
-      setFretFontName(_fretFonts[0].displayName);
+
+      qDebug() << "Printing _fretFonts contents:";
+      qDebug() << _durationFonts[1].displayName;
+
+      setDurationFontName(_durationFonts[1].displayName);
+      setFretFontName(_fretFonts[1].displayName);
       }
 
 StaffType::StaffType(StaffGroup sg, const QString& xml, const QString& name, int lines, int stpOff, qreal lineDist,
@@ -516,6 +524,9 @@ void StaffType::setFretFontName(const QString& name)
       if (idx >= _fretFonts.size())
             idx = 0;          // if name not found, use first font
       _fretFont.setFamily(_fretFonts[idx].family);
+
+      qDebug("StaffType::setFretFontName: <%s>", qPrintable(_fretFonts[idx].family));
+
       _fretFontIdx = idx;
       _fretMetricsValid = false;
       }
@@ -1210,6 +1221,8 @@ bool StaffType::readConfigFile(const QString& fileName)
       QFileInfo fi(path);
       QFile f(path);
 
+      qDebug("StaffTypeTablature::readConfigFile: <%s>", qPrintable(path));
+
       if (!fi.exists() || !f.open(QIODevice::ReadOnly)) {
             MScore::lastError = QObject::tr("Cannot open tablature font description:\n%1\n%2").arg(f.fileName()).arg(f.errorString());
             qDebug("StaffTypeTablature::readConfigFile failed: <%s>", qPrintable(path));
@@ -1238,6 +1251,9 @@ bool StaffType::readConfigFile(const QString& fileName)
                         else
                               e.unknown();
                         }
+                        //printFretFonts();
+
+                      //  qDebug() << "Duration Fonts:" << _durationFonts;
                   return true;
                   }
             }

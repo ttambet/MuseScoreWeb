@@ -254,7 +254,7 @@ Score::Score()
       _layer.append(l);
       _layerTags[0]   = "default";
 
-      _scoreFont = ScoreFont::fontFactory("emmentaler");
+      _scoreFont = ScoreFont::fontFactory("bravura");
 
       _fileDivision           = MScore::division;
       _style  = MScore::defaultStyle();
@@ -4633,6 +4633,7 @@ void MasterScore::setUpdateAll()
 
 void MasterScore::setLayoutAll(int staff, const Element* e)
       {
+            qDebug() << "setLayoutAll called with staff:" << staff << "and element:" << e;
       _cmdState.setTick(Fraction(0,1));
       _cmdState.setTick(measures()->last() ? measures()->last()->endTick() : Fraction(0,1));
 
@@ -4644,7 +4645,9 @@ void MasterScore::setLayoutAll(int staff, const Element* e)
             _cmdState.setStaff(endStaff);
 
             _cmdState.setElement(e);
-            }
+            qDebug() << "Layout set for element" << "from staff" << startStaff
+                 << "to staff" << endStaff;
+      }
       }
 
 //---------------------------------------------------------

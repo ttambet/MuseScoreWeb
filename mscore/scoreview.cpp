@@ -3232,8 +3232,10 @@ void ScoreView::adjustCanvasPosition(const Element* el, bool playBack, int staff
             else
                   return;
             }
-      if (!m)
+      if (!m) {
+            qDebug("NO Element!");
             return;
+      }
 
       int staffIdx = el->staffIdx();
       System* sys = m->system();
@@ -4864,7 +4866,7 @@ static bool needViewportMove(Score* cs, ScoreView* cv)
                   const StaffLines* l = m->staffLines(st);
                   if (l) {
                         const QRectF r = l->bbox().translated(l->canvasPos());
-//                         qDebug() << "viewport" << viewport << "lines" << l->canvasPos() << l->bbox() << p;
+                         qDebug() << "viewport" << viewport << "lines" << l->canvasPos() << l->bbox();
                         if (viewport.intersects(r))
                               return false;
                         }

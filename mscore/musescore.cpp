@@ -160,6 +160,38 @@ extern Ms::Synthesizer* createZerberus();
 #include "thirdparty/libcrashreporter-qt/src/libcrashreporter-handler/Handler.h"
 #endif
 
+
+#include <QApplication>
+#include <QMainWindow>
+#include <QSvgRenderer>
+#include <QPainter>
+#include <QDebug>
+
+void checkFile(const QString& filePath) {
+    QFile file(filePath);
+    if (!file.exists()) {
+        qDebug() << "File does not exist at path:" << filePath;
+        return;
+    }
+
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Failed to open file:" << filePath << "Error:" << file.errorString();
+        return;
+    }
+
+    qDebug() << "File content:" << file.readAll();
+}
+
+void renderSVG(QPainter* painter, const QString& svgFilePath, const QRect& rect) {
+    QSvgRenderer svgRenderer(svgFilePath);
+    if (!svgRenderer.isValid()) {
+        qDebug() << "Invalid SVG renderer for file:" << svgFilePath;
+        return;
+    }
+    svgRenderer.render(painter, rect);
+    qDebug() << "SVG rendered successfully from:" << svgFilePath;
+}
+
 namespace Ms {
 
 MuseScore* mscore;
@@ -274,6 +306,18 @@ extern TextPalette* textPalette;
 static constexpr double SCALE_MAX  = 16.0;
 static constexpr double SCALE_MIN  = 0.05;
 static constexpr double SCALE_STEP = 1.7;
+
+
+void listAvailableFonts() {
+    QFontDatabase fontDatabase;
+    QStringList fontFamilies = fontDatabase.families();
+    qDebug() << "Available fonts:";
+    for (const QString& fontFamily : fontFamilies) {
+        qDebug() << "  " << fontFamily;
+    }
+}
+
+
 
 static const char* saveOnlineMenuItem = "file-save-online";
 //---------------------------------------------------------
@@ -1002,6 +1046,8 @@ MuseScore::MuseScore()
       // qApp->installEventFilter(_tourHandler);
       // _tourHandler->loadTours();
 
+     
+
       QScreen* screen = QGuiApplication::primaryScreen();
       if (userDPI == 0.0) {
 #if defined(Q_OS_WIN)
@@ -1099,6 +1145,16 @@ MuseScore::MuseScore()
       layout = new QVBoxLayout;
       layout->setMargin(0);
       layout->setSpacing(0);
+
+QPushButton* testButton = new QPushButton("Test Button", mainScore);
+layout->addWidget(testButton);
+if (testButton->isVisible()) {
+    qDebug() << "Test button is visible.";
+} else {
+    qDebug() << "Test button is not visible.";
+}
+
+
       mainScore->setLayout(layout);
 
       // _navigator = new NScrollArea;
@@ -1137,7 +1193,7 @@ MuseScore::MuseScore()
 
       mainWindow->setStretchFactor(0, 1);
       mainWindow->setStretchFactor(1, 0);
-      mainWindow->setSizes(QList<int>({500, 50}));
+      mainWindow->setSizes(QList<int>({1000, 100}));
 
       QSplitter* envelope = new QSplitter;
       envelope->setChildrenCollapsible(false);
@@ -1165,7 +1221,7 @@ MuseScore::MuseScore()
       // envelope->addWidget(importmidiShowPanel);
       // }
 
-      envelope->setSizes(QList<int>({550, 180}));
+      envelope->setSizes(QList<int>({1500, 180}));
 
       splitter = new QSplitter;
       tab1 = createScoreTab();
@@ -1918,6 +1974,8 @@ MuseScore::MuseScore()
             connect(seq, SIGNAL(stopped()), SLOT(seqStopped()));
             }
       loadScoreList();
+      // Partituuride laadimine
+      //loadScoreList1();
 
       QClipboard* cb = QApplication::clipboard();
       connect(cb, SIGNAL(dataChanged()), SLOT(clipboardChanged()));
@@ -3380,9 +3438,9 @@ void setMscoreLocale(QString _localeName)
 
       // find the most recent translation file
       // try to replicate QTranslator.load algorithm in our particular case
-      loadTranslation("mscore", _localeName);
-      loadTranslation("instruments", _localeName);
-      loadTranslation("tours", _localeName);
+      //loadTranslation("mscore", _localeName);
+      //loadTranslation("instruments", _localeName);
+      //loadTranslation("tours", _localeName);
 
       QString resourceDir;
 #if defined(Q_OS_MAC) || defined(Q_OS_WIN)
@@ -3414,6 +3472,7 @@ void setMscoreLocale(QString _localeName)
 
 static void loadScores(const QStringList& argv)
       {
+      qDebug("calling loadScores");
       int currentScoreView = 0;
       if (argv.isEmpty()) {
             if (startWithNewScore)
@@ -3451,17 +3510,41 @@ static void loadScores(const QStringList& argv)
 
                               MasterScore* score = mscore->readScore(startScore);
                               if (startScore.startsWith(":/") && score) {
-                                    score->setStyle(MScore::defaultStyle());
+                                    qDebug("Read score My_First_Score 1");
+
+                                    MStyle& defaultStyle = MScore::defaultStyle();
+                                  //checkStyleProperties(defaultStyle);
+                                  //score->setStyle("QLabel { color : red; }");
+
                                     score->style().checkChordList();
                                     score->styleChanged();
                                     score->setName(mscore->createDefaultName());
-                                    // TODO score->setPageFormat(*MScore::defaultStyle().pageFormat());
+                                    //score->setPageFormat(*MScore::defaultStyle().pageFormat());
+
+                                    //qDebug() << "Score style set to:" << score->style().name();
+                                    qDebug() << "Score name set to:" << score->name();
+
+                                    if (score->firstMeasure() != nullptr) {
+                                      qDebug() << "Notes are present in the score";
+                                    } else {
+                                      qDebug() << "No notes found in the score";
+                                    }
+
                                     score->doLayout();
                                     score->setCreated(true);
+                                    //score->update();
+
+                                    if (score->staff(0)) {
+                                          qDebug() << "Staff exists and lines are created";
+                                    } else {
+                                          qDebug() << "Failed to create staff lines";
                                     }
+
+                              }
                               if (score == 0) {
                                     score = mscore->readScore(":/data/My_First_Score.mscx");
                                     if (score) {
+                                          qDebug("Read score My_First_Score 2");
                                           score->setStyle(MScore::defaultStyle());
                                           score->style().checkChordList();
                                           score->styleChanged();
@@ -3472,6 +3555,7 @@ static void loadScores(const QStringList& argv)
                                           }
                                     }
                               if (score)
+                                    qDebug() << "Score exists and created";
                                     currentScoreView = mscore->appendScore(score);
                               }
                               break;
@@ -3494,8 +3578,10 @@ static void loadScores(const QStringList& argv)
                   }
             }
 
-      if (mscore->noScore())
+      if (mscore->noScore()) {
+            qDebug() << "No score!";
             currentScoreView = -1;
+      }
       mscore->setCurrentView(0, currentScoreView);
       mscore->setCurrentView(1, currentScoreView);
       }
@@ -6028,11 +6114,33 @@ void MuseScore::setPlayPartOnly(bool val)
 ScoreTab* MuseScore::createScoreTab()
       {
       ScoreTab* tab = new ScoreTab(&scoreList, this);
-      tab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-      connect(tab, SIGNAL(currentScoreViewChanged(ScoreView*)), SLOT(setCurrentScoreView(ScoreView*)));
-      connect(tab, SIGNAL(tabCloseRequested(int)), SLOT(removeTab(int)));
-      connect(tab, SIGNAL(actionTriggered(QAction*)), SLOT(cmd(QAction*)));
-      return tab;
+    tab->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // Debugging the creation and setup
+    qDebug() << "Creating new ScoreTab";
+
+    bool connected =  connect(tab, SIGNAL(currentScoreViewChanged(ScoreView*)), SLOT(setCurrentScoreView(ScoreView*)));
+    if (!connected) {
+        qDebug() << "Connection failed: currentScoreViewChanged";
+    }
+
+    connected = connect(tab, SIGNAL(tabCloseRequested(int)), SLOT(removeTab(int)));
+    if (!connected) {
+        qDebug() << "Connection failed: tabCloseRequested";
+    }
+
+    connected = connect(tab, SIGNAL(actionTriggered(QAction*)), SLOT(cmd(QAction*)));
+    if (!connected) {
+        qDebug() << "Connection failed: actionTriggered";
+    }
+
+    // Ensure that the tab is created and configured correctly
+    if (tab) {
+        qDebug() << "ScoreTab created and configured successfully";
+    } else {
+        qDebug() << "Failed to create ScoreTab";
+    }
+    return tab;
       }
 
 //---------------------------------------------------------
@@ -7180,35 +7288,134 @@ void MuseScore::updateUiStyleAndTheme()
 
       QString wd      = QString("%1/%2").arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).arg(QCoreApplication::applicationName());
       // set UI Color Palette
-      QPalette p(QApplication::palette());
+      //QPalette p(QApplication::palette());
       QString jsonPaletteFilename = preferences.isThemeDark() ? "palette_dark_fusion.json" : "palette_light_fusion.json";;
-      QFile jsonPalette(QString(":/themes/%1").arg(jsonPaletteFilename));
-      // read from Documents TODO: remove this
-      if (QFile::exists(QString("%1/%2").arg(wd, "ms_palette.json")))
-            jsonPalette.setFileName(QString("%1/%2").arg(wd, "ms_palette.json"));
-      if (jsonPalette.open(QFile::ReadOnly | QFile::Text)) {
-            QJsonDocument d = QJsonDocument::fromJson(jsonPalette.readAll());
-            QJsonObject o = d.object();
-            QMetaEnum metaEnum = QMetaEnum::fromType<QPalette::ColorRole>();
-            for (int i = 0; i < metaEnum.keyCount(); ++i) {
-                  QJsonValue v = o.value(metaEnum.valueToKey(i));
-                  if (!v.isUndefined())
-                        p.setColor(static_cast<QPalette::ColorRole>(metaEnum.value(i)), QColor(v.toString()));
-                  }
+      QFile jsonPalette("/home/timo/dev/qt5/MuseScore/share/themes/style_dark_fusion.css");
+      // Define the JSON string for the color palette
+QString jsonString = R"(
+    {
+        "WindowText": "#000000",
+        "Button": "#FFFFFF",
+        "Light": "#CCCCCC",
+        "Midlight": "#EEEEEE",
+        "Dark": "#888888",
+        "Mid": "#BBBBBB",
+        "Shadow": "#555555",
+        "Text": "#333333",
+        "BrightText": "#FFFFFF",
+        "ButtonText": "#000000",
+        "Base": "#AAAAAA",
+        "Window": "#EEEEEE",
+        "Highlight": "#0066CC",
+        "HighlightedText": "#FFFFFF",
+        "Link": "#0000EE",
+        "LinkVisited": "#551A8B",
+        "AlternateBase": "#EFEFEF",
+        "ToolTipBase": "#FFFFE1",
+        "ToolTipText": "#000000",
+        "PlaceholderText": "#AAAAAA"
+    }
+)";
+
+
+    QJsonDocument d = QJsonDocument::fromJson(jsonString.toUtf8());
+    QJsonObject o = d.object();
+
+    // Apply the palette colors
+    QPalette p = QApplication::palette();
+    QMetaEnum metaEnum = QMetaEnum::fromType<QPalette::ColorRole>();
+    for (int i = 0; i < metaEnum.keyCount(); ++i) {
+        const char* key = metaEnum.valueToKey(i);
+        if (o.contains(key)) {
+            QJsonValue v = o.value(key);
+            if (v.isString()) {
+                p.setColor(static_cast<QPalette::ColorRole>(metaEnum.value(i)), QColor(v.toString()));
             }
-      QApplication::setPalette(p);
+        } else {
+            qDebug() << "No color defined for role:" << key;
+        }
+    }
+    QApplication::setPalette(p);
 
       // set UI Style
-      QString css;
-      QString styleFilename = preferences.isThemeDark() ? "style_dark_fusion.css" : "style_light_fusion.css";
-      QFile fstyle(QString(":/themes/%1").arg(styleFilename));
-      // read from Documents TODO: remove this
-      if (QFile::exists(QString("%1/%2").arg(wd, "ms_style.css")))
-            fstyle.setFileName(QString("%1/%2").arg(wd, "ms_style.css"));
-      if (fstyle.open(QFile::ReadOnly | QFile::Text)) {
-            QTextStream in(&fstyle);
-            css = in.readAll();
-            }
+
+    QString css = R"(
+        *:disabled {
+            color: gray;
+        }
+
+        QMenu::disabled {
+            background-color: palette(base);
+        }
+
+        QGroupBox {
+            font-weight: bold;
+        }
+
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            subcontrol-position: top left;
+            padding: 5px 5px;
+        }
+
+        QDockWidget {
+            border: 1px solid lightgray;
+            titlebar-close-icon: url(:/data/icons/png/window-close-dark.png);
+            titlebar-normal-icon: url(:/data/icons/png/window-float-dark.png);
+        }
+
+        QTabBar::close-button {
+            image: url(:/data/icons/png/window-close-dark.png);
+        }
+
+        QTabBar::close-button:hover {
+            image: url(:/data/icons/png/window-close-hover-dark.png);
+        }
+
+        QPushButton:flat:hover {
+            border: 1px solid dimgray;
+            border-radius: 3px;
+        }
+
+        QPushButton:flat:hover:checked {
+            background: dimgray;
+        }
+
+        QToolButton#palette, QToolButton#title {
+            border: none;
+        }
+
+        /* staff text properties */
+        QToolButton[voice1="true"]:checked, QToolButton[voice1="true"]:pressed { color: white; background: $voice1-bgcolor; }
+        QToolButton[voice2="true"]:checked, QToolButton[voice2="true"]:pressed { color: white; background: $voice2-bgcolor; }
+        QToolButton[voice3="true"]:checked, QToolButton[voice3="true"]:pressed { color: white; background: $voice3-bgcolor; }
+        QToolButton[voice4="true"]:checked, QToolButton[voice4="true"]:pressed { color: white; background: $voice4-bgcolor; }
+
+        /* Toolbar voice selector */
+        QToolButton#voice:checked, QToolButton#voice:pressed { color: white; }
+
+        /* ToolbarButton text to match ToolbarButton icons */
+        QToolButton[iconic-text="true"] { color: $buttonHighlightEnabledOff; }
+        QToolButton[iconic-text="true"]:enabled:checked { color: $buttonHighlightEnabledOn; }
+        QToolButton[iconic-text="true"]:disabled { color: $buttonHighlightDisabledOff; }
+        QToolButton[iconic-text="true"]:disabled:checked { color: $buttonHighlightDisabledOn; }
+
+        QTableView { border: none; }
+
+        QMainWindow::separator {
+            background: #C8C8C8;
+            width: 1px; /* when vertical */
+            height: 1px; /* when horizontal */
+        }
+
+        QMainWindow::separator:hover {
+            background: gray;
+        }
+    )";
+
+    // Apply the loaded stylesheet to the application
+    //qApp->setStyleSheet(css);
+    qDebug() << "Stylesheet applied directly from QString.";
 
       css.replace("$voice1-bgcolor", MScore::selectColor[0].name(QColor::HexRgb));
       css.replace("$voice2-bgcolor", MScore::selectColor[1].name(QColor::HexRgb));
@@ -7241,9 +7448,77 @@ void MuseScore::updateUiStyleAndTheme()
 
 using namespace Ms;
 
+bool isFontLoaded(const QString& fontName) {
+    QFontDatabase fontDatabase;
+    if (fontDatabase.families().contains(fontName)) {
+        qDebug() << "Font" << fontName << "is loaded.";
+        return true;
+    } else {
+        qDebug() << "Font" << fontName << "not loaded.";
+        return false;
+    }
+}
+
 //---------------------------------------------------------
 //   main
 //---------------------------------------------------------
+
+bool isFontLoaded1(const QString& fontName) {
+    QFontDatabase fontDatabase;
+    if (fontDatabase.families().contains(fontName)) {
+        qDebug("Font is loaded.");
+        return true;
+    } else {
+        qDebug("Font not loaded.");
+        return false;
+    }
+}
+
+#include "scoreeditorwindow.h"
+
+int mai3(int argc, char **argv) {
+    QApplication app(argc, argv);
+    MScore::init();
+    preferences.init();
+
+    MuseScore::updateUiStyleAndTheme();
+    iconPath = QString(":/data/icons/");
+    Shortcut::init();
+    WorkspacesManager::initCurrentWorkspace();
+    mscore = new MuseScore();
+    gscore = new MasterScore();
+    gscore->setPaletteMode(true);
+    gscore->setMovements(new Movements());
+
+    // Check if the font is loaded
+    isFontLoaded1("Bravura");
+    isFontLoaded1("MScore");
+
+    // Set the musical text font
+//    gscore->style().set(Sid::MusicalTextFont, QString("Bravura"));
+//    gscore->setScoreFont(ScoreFont::fontFactory(gscore->styleSt(Sid::MusicalSymbolFont)));
+
+//gscore->style().set(Sid::MusicalTextFont, QString("Bravura"));
+//    gscore->setScoreFont(ScoreFont::fontFactory(gscore->styleSt(Sid::MusicalSymbolFont)));
+
+    // Set the note head width
+    gscore->setNoteHeadWidth(gscore->scoreFont()->width(SymId::noteheadBlack, gscore->spatium() / SPATIUM20));
+    
+    gscore->doLayout();
+    gscore->setCreated(true);
+
+    // Read languages list
+    mscore->readLanguages(mscoreGlobalShare + "locale/languages.xml");
+    QApplication::instance()->installEventFilter(mscore);
+    mscore->readSettings();
+    QObject::connect(qApp, SIGNAL(messageReceived(const QString&)), mscore, SLOT(handleMessage(const QString&)));
+
+    ScoreEditorWindow window;
+    window.show();
+
+    return app.exec();
+}
+
 
 int main(int argc, char* av[])
       {
@@ -7536,7 +7811,7 @@ int main(int argc, char* av[])
       mscoreGlobalShare = getSharePath();
       iconPath = externalIcons ? mscoreGlobalShare + QString("icons/") :  QString(":/data/icons/");
 
-#ifdef WEBASSEMBLY_DISBALE
+#ifdef WEBASSEMBLY_DISABLE
       if (!converterMode && !pluginMode) {
             if (!argv.isEmpty()) {
                   int ok = true;
@@ -7591,7 +7866,7 @@ int main(int argc, char* av[])
             localeName = s.value(PREF_UI_APP_LANGUAGE, "system").toString();
             }
 
-      setMscoreLocale(localeName);
+      //setMscoreLocale(localeName);
 
       Shortcut::init();
       preferences.init(true);
@@ -7718,16 +7993,67 @@ int main(int argc, char* av[])
             WorkspacesManager::initCurrentWorkspace();
             }
 
+      qDebug("Before MuseScore load");
       mscore = new MuseScore();
+      qDebug("MuseScore loaded");
       // create a score for internal use
       gscore = new MasterScore();
       gscore->setPaletteMode(true);
       gscore->setMovements(new Movements());
       gscore->setStyle(MScore::baseStyle());
 
+    // List all available fonts
+    listAvailableFonts();
+
+ // Check if specific fonts are loaded
+    if (isFontLoaded("Bravura")) {
+        qDebug() << "Bravura is loaded.";
+    } else {
+        qDebug() << "Attempting to load Bravura font.";
+        QFontDatabase::addApplicationFont(":/fonts/bravura/Bravura.otf");
+    }
+
+    if (gscore) {
+        QFont bravuraFont("Bravura");
+        if (bravuraFont.family() == "Bravura") {
+            gscore->style().set(Sid::MusicalTextFont, bravuraFont);
+            qDebug() << "Bravura font set for music symbols";
+        } else {
+            qDebug() << "Failed to set Bravura font";
+        }
+    }
+
+    if (isFontLoaded("MScore")) {
+        qDebug() << "MScore is loaded.";
+    } else {
+        qDebug() << "Attempting to load MScore font.";
+        QFontDatabase::addApplicationFont(":/fonts/mscore/mscore.ttf");
+    }
+
+    if (isFontLoaded("Gootville")) {
+        qDebug() << "Gootville is loaded.";
+    } else {
+        qDebug() << "Attempting to load Gootville font.";
+        QFontDatabase::addApplicationFont(":/fonts/gootville/Gootville.otf");
+    }
+
+    if (isFontLoaded("MuseJazz")) {
+        qDebug() << "MuseJazz is loaded.";
+    } else {
+        qDebug() << "Attempting to load MuseJazz font.";
+        QFontDatabase::addApplicationFont(":/fonts/musejazz/MuseJazz.otf");
+    }
+
+
+
+      //gscore->style().set(Sid::MusicalTextFont, QString("Bravura Text"));
+      //ScoreFont* scoreFont = ScoreFont::fontFactory("Bravura");
+      //gscore->setScoreFont(scoreFont);
+
       gscore->style().set(Sid::MusicalTextFont, QString("Bravura Text"));
       ScoreFont* scoreFont = ScoreFont::fontFactory("Bravura");
       gscore->setScoreFont(scoreFont);
+
       gscore->setNoteHeadWidth(scoreFont->width(SymId::noteheadBlack, gscore->spatium()) / SPATIUM20);
 
       //read languages list
@@ -7840,9 +8166,12 @@ int main(int argc, char* av[])
       if (mscore->hasToCheckForExtensionsUpdate())
             mscore->checkForExtensionsUpdate();
 
+      QTimer *timer = new QTimer();
+            timer->setSingleShot(true);
+            timer->start(500);
+
 
       if (!scoresOnCommandline && preferences.getBool(PREF_UI_APP_STARTUP_SHOWSTARTCENTER) && (!restoredSession || mscore->scores().size() == 0)) {
-#ifdef Q_OS_MAC
 // ugly, but on mac we get an event when a file is open.
 // We can't get the event when the startcenter is shown.
 // So we let the event loop run a bit before showing the start center.
@@ -7856,11 +8185,6 @@ int main(int argc, char* av[])
                   timer->deleteLater();
                   } );
             timer->start(500);
-#else
-
-            getAction("startcenter")->setChecked(true);
-            mscore->showStartcenter(true);
-#endif
             }
       else {
             mscore->tourHandler()->startTour("welcome");
@@ -7876,6 +8200,13 @@ int main(int argc, char* av[])
       QSettings settings;
       if (settings.value("synthControlVisible", false).toBool())
             mscore->showSynthControl(true);
+
+
+      checkFile(":/data/shortcuts.xml");
+    checkFile(":/data/icons/grace32after.svg");
+    checkFile(":/fonts/mscore/metadata.json");
+
+    //gscore->doLayout();
 
       return qApp->exec();
       }

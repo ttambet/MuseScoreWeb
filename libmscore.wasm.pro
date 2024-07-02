@@ -10,21 +10,38 @@ PRECOMPILED_HEADER = all.h
 
 QT += gui xml xmlpatterns widgets svg qml quick quickwidgets printsupport
 
-#LIBS += -L/usr/local/lib -lfreetype -lz -lvorbis -lvorbisfile
 
 INCLUDEPATH += ./libmscore ./thirdparty/freetype/include ./mscore ./thirdparty ./thirdparty/dtl
 
-QMAKE_CXXFLAGS += -include $$_PRO_FILE_PWD_/all.h -fsigned-char -ffast-math -std=c++11 -stdlib=libc++
+QMAKE_CXXFLAGS += -include $$_PRO_FILE_PWD_/all.h -fsigned-char -ffast-math -std=c++11 -stdlib=c11
 QMAKE_CXXFLAGS +=     -Wno-trigraphs -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-float-conversion -Wno-non-literal-null-conversion -Wno-objc-literal-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -Wno-sign-conversion -Wno-infinite-recursion -Wno-move -Wno-comma -Wno-block-capture-autoreleasing -Wno-strict-prototypes -Wno-range-loop-analysis -Wno-semicolon-before-method-body -Wno-four-char-constants -Wno-unknown-pragmas -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-overloaded-virtual -Wno-deprecated-declarations -Wno-unused-parameter
-QMAKE_CXXFLAGS += -s USE_ZLIB=1
-LIBS += -s USE_ZLIB=1 -s TOTAL_MEMORY=512MB -s TOTAL_STACK=128MB # -s "BINARYEN_TRAP_MODE='clamp'"
+QMAKE_CXXFLAGS += -s USE_ZLIB=1 -s USE_FREETYPE=1
+LIBS += -s USE_ZLIB=1 -s USE_FREETYPE=1 -s TOTAL_MEMORY=1024MB -s TOTAL_STACK=512MB #-s "BINARYEN_TRAP_MODE='clamp'"
 #LIBS += --source-map-base http://localhost:8000/build.wasm/
-LIBS += --preload-file ../applebuild/mscore.app/Contents/Resources/@/Users/matan/Documents/code/MuseScore/applebuild/share/Contents/Resources/
-#QMAKE_LFLAGS_DEBUG -= -Os
-#QMAKE_LFLAGS_DEBUG += -O0
+#LIBS += --preload-file ../applebuild/mscore.app/Contents/Resources/@/Users/matan/Documents/code/MuseScore/applebuild/share/Contents/Resources/
+
+LIBS += --preload-file /usr/local/share/mscore-3.6/locale/
+LIBS += --preload-file /usr/local/share/mscore-3.6/workspaces/
+LIBS += --preload-file /usr/local/share/mscore-3.6/styles/
+LIBS += --preload-file /usr/local/share/mscore-3.6/templates/
+LIBS += --preload-file /usr/local/share/mscore-3.6/instruments/
+LIBS += --preload-file /usr/local/share/mscore-3.6/plugins/
+
+LIBS += --preload-file /home/timo/dev/qt5/MuseScore/mscore/data/icons@/data/icons/
+LIBS += --preload-file /home/timo/dev/qt5/MuseScore/fonts@/fonts/
+LIBS += --preload-file /home/timo/dev/qt5/MuseScore/share/themes@/themes/
+LIBS += --preload-file /home/timo/dev/qt5/MuseScore/mscore/data@/data/
+LIBS += --preload-file /home/timo/dev/qt5/MuseScore/Resources/styles@/styles/
+
+
+# Enable verbose logging
+DEFINES += QT_MESSAGELOGCONTEXT
+
 QMAKE_LFLAGS_DEBUG -= -g
 QMAKE_LFLAGS_DEBUG += -g4
-RESOURCES += mscore/musescore.qrc mscore/qml.qrc mscore/musescorefonts-Mac.qrc effects/zita1/zita.qrc mscore/shortcut.qrc
+RESOURCES += mscore/musescore.qrc mscore/qml.qrc mscore/musescorefonts-Mac.qrc
+RESOURCES += effects/zita1/zita.qrc mscore/shortcut.qrc mscore/musescorefonts-Free.qrc mscore/musescorefonts-FreeSerif.qrc mscore/musescorefonts-MScore.qrc
+
 
 SOURCES = \
       libmscore/accidental.cpp            \

@@ -173,6 +173,10 @@ static const int  STAFF_GROUP_NAME_MAX_LENGTH   = 32;
 class StaffType {
       friend class TabDurationSymbol;
 
+      static const QList<TablatureFretFont>& getFretFonts() {
+        return _fretFonts;
+    }
+
       StaffGroup _group = StaffGroup::STANDARD;
 
       QString _xmlName;                   // the name used to reference this preset in instruments.xml

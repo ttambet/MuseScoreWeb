@@ -271,8 +271,9 @@ bool WorkspacesManager::isDefaultEditedWorkspace(Workspace* workspace)
 void WorkspacesManager::initCurrentWorkspace()
       {
       initWorkspaces();
+      //PREF_APP_WORKSPACE = '/usr/local/share/mscore-3.6/workspaces';
       m_currentWorkspace = findByName(preferences.getString(PREF_APP_WORKSPACE));
-      Q_ASSERT(!workspaces().empty());
+      //Q_ASSERT(!workspaces().empty());
       if (m_currentWorkspace == 0)
             m_currentWorkspace = workspaces().at(0);
       }

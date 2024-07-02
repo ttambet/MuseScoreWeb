@@ -1,17 +1,59 @@
-CONFIG += debug
+CONFIG += release
 
-CONFIG += precompiled_header sdk_no_version_check object_parallel_to_source
+CONFIG += sdk_no_version_check object_parallel_to_source
+CONFIG += precompiled_header  
 PRECOMPILED_HEADER = all.h
 
 QT += gui xml xmlpatterns widgets svg qml quick quickwidgets printsupport
 
 #LIBS += -L/usr/local/lib -lfreetype -lz -lvorbis -lvorbisfile
-LIBS += -L/usr/local/lib -lfreetype -lz
+# LIBS += -L/usr/local/lib -lfreetype -lz
+
+# Add library search paths
+# LIBS += -L/usr/local/lib
+# LIBS += -L/home/timo/dev/qt5/qtbase/lib  # Assuming the libraries are in the lib directory
+# LIBS += -L/usr/lib/x86_64-linux-gnu  # Add this for FreeType and zlib
+
+# Specify libraries to link against
+# LIBS += -lfreetype -lz
+
+# LIBS += -lfreetype -lz -lcompiler_rt
+
+# Specify output file
+TARGET = libmscore
+DESTDIR = ./output
 
 INCLUDEPATH += ./libmscore ./thirdparty/freetype/include ./mscore ./thirdparty ./thirdparty/dtl
+# INCLUDEPATH += /usr/include/freetype2
+# INCLUDEPATH += /usr/include/libpng16
 
-QMAKE_CXXFLAGS += -include $$_PRO_FILE_PWD_/all.h -fsigned-char -ffast-math -std=c++11 -stdlib=libc++
+# WebAssembly specific configuration
+QMAKE_CXX = em++
+QMAKE_LINK = em++
+QMAKE_AR = emar
+QMAKE_RANLIB = emranlib
+
+
+QMAKE_CXXFLAGS += -include $$_PRO_FILE_PWD_/all.h -fsigned-char -std=c++11 -stdlib=libc++
 QMAKE_CXXFLAGS +=     -Wno-trigraphs -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wno-missing-braces -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-bool-conversion -Wno-enum-conversion -Wno-float-conversion -Wno-non-literal-null-conversion -Wno-objc-literal-conversion -Wno-shorten-64-to-32 -Wno-newline-eof -Wno-c++11-extensions -Wno-sign-conversion -Wno-infinite-recursion -Wno-move -Wno-comma -Wno-block-capture-autoreleasing -Wno-strict-prototypes -Wno-range-loop-analysis -Wno-semicolon-before-method-body -Wno-four-char-constants -Wno-unknown-pragmas -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-overloaded-virtual -Wno-deprecated-declarations -Wno-unused-parameter
+
+# Linker flags for WebAssembly
+QMAKE_LFLAGS += -s ALLOW_MEMORY_GROWTH=1
+QMAKE_LFLAGS += -s WASM=1
+QMAKE_LFLAGS += -s MODULARIZE=1
+# QMAKE_LFLAGS += -s EXPORT_NAME="'libmscore'"
+# QMAKE_LFLAGS += -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']
+QMAKE_LFLAGS += -s TOTAL_MEMORY=256MB
+# QMAKE_LFLAGS += -s LLD_REPORT_UNDEFINED
+QMAKE_LFLAGS += -s ERROR_ON_UNDEFINED_SYMBOLS=0
+QMAKE_LFLAGS += -o $(DESTDIR)/libmscore.js
+QMAKE_LFLAGS_DEBUG -= -g
+QMAKE_LFLAGS_DEBUG += -g4
+
+# Exclude moc_predefs.h from being treated as a source file
+QMAKE_CLEAN += moc_predefs.h
+DISTFILES += moc_predefs.h
+
 #QMAKE_CXXFLAGS += -s USE_ZLIB=1
 #LIBS += -s USE_ZLIB=1 -s TOTAL_MEMORY=512*1024*1024 -s TOTAL_STACK=128*1024*1024  -s "BINARYEN_TRAP_MODE='clamp'"
 #LIBS += --source-map-base http://localhost:8000/build.wasm/
@@ -1085,3 +1127,9 @@ HEADERS += \
 
 #FORMS += \
 #fluid/fluid_gui.ui \
+
+SOURCES += \
+    libmscore/qhtml5file.cpp
+
+HEADERS += \
+    libmscore/qhtml5file.h

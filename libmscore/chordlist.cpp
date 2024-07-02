@@ -1792,7 +1792,7 @@ void ChordList::write(XmlWriter& xml) const
 
 bool ChordList::read(const QString& name)
       {
-//      qDebug("ChordList::read <%s>", qPrintable(name));
+      qDebug("ChordList::read <%s>", qPrintable(name));
       QString path;
       QFileInfo ftest(name);
       if (ftest.isAbsolute())
@@ -1814,7 +1814,8 @@ bool ChordList::read(const QString& name)
 #elif defined(Q_OS_ANDROID)
             path = QString(":/styles/chords_std.xml");
 #else
-            path = QString("%1styles/%2").arg(MScore::globalShare()).arg("chords_std.xml");
+           //path = QString("%1styles/%2").arg(MScore::globalShare()).arg("chords_std.xml");
+           path = QString("/home/timo/dev/qt5/MuseScore/Resources/styles/chords_std.xml");
 #endif
 
       if (name.isEmpty())
@@ -1833,6 +1834,7 @@ bool ChordList::read(const QString& name)
                   // QStringList sl = version.split('.');
                   // int _mscVersion = sl[0].toInt() * 100 + sl[1].toInt();
                   read(e);
+                  qDebug("ChordList::read true");
                   return true;
                   }
             }

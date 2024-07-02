@@ -34,10 +34,11 @@ namespace Ms {
 static const int FALLBACK_FONT = 0;       // Bravura
 
 QVector<ScoreFont> ScoreFont::_scoreFonts {
+     // ScoreFont("Campania",    "Campania",     ":/fonts/campania/",   "Campania.otf"  ),
       ScoreFont("Bravura",    "Bravura",     ":/fonts/bravura/",   "Bravura.otf"  ),
-      ScoreFont("Emmentaler", "MScore",      ":/fonts/mscore/",    "mscore.ttf"   ),
-      ScoreFont("Gonville",   "Gootville",   ":/fonts/gootville/", "Gootville.otf" ),
-      ScoreFont("MuseJazz",   "MuseJazz",     ":/fonts/musejazz/", "MuseJazz.otf" ),
+      ScoreFont("Emmentaler", "Bravura",      ":/fonts/bravura/",    "Bravura.otf"   ),
+      ScoreFont("Gonville",   "Bravura",   ":/fonts/bravura/", "Bravura.otf" ),
+      ScoreFont("MuseJazz",   "Bravura",     ":/fonts/bravura/", "Bravura.otf" ),
       };
 
 std::array<uint, size_t(SymId::lastSym)+1> ScoreFont::_mainSymCodeTable { {0} };
@@ -5681,17 +5682,23 @@ void ScoreFont::draw(SymId id, QPainter* painter, qreal mag, const QPointF& pos,
 
 void ScoreFont::draw(SymId id, QPainter* painter, const QSizeF& mag, const QPointF& pos, qreal worldScale) const
       {
+          qDebug("ScoreFont::draw: calling sym %d", int(id));
       if (!sym(id).symList().empty()) {  // is this a compound symbol?
+          qDebug("ScoreFont::draw: calling compound sym %d", int(id));
             draw(sym(id).symList(), painter, mag, pos);
             return;
             }
       if (!isValid(id)) {
-            if (MScore::useFallbackFont && this != ScoreFont::fallbackFont())
-                  fallbackFont()->draw(id, painter, mag, pos, worldScale);
-            else
-                  qDebug("ScoreFont::draw: invalid sym %d", int(id));
+            if (MScore::useFallbackFont && this != ScoreFont::fallbackFont()) {
+               qDebug("ScoreFont::draw: useFallbackFont %d", int(id));
+               fallbackFont()->draw(id, painter, mag, pos, worldScale);
+            } else {
+                qDebug("ScoreFont::draw: invalid sym %d", int(id));
+            }
+                  
             return;
             }
+             qDebug("ScoreFont::draw: calling FT_Load_Glyph %d", int(id));
       int rv = FT_Load_Glyph(face, sym(id).index(), FT_LOAD_DEFAULT);
       if (rv) {
             qDebug("load glyph id %d, failed: 0x%x", int(id), rv);
@@ -5722,7 +5729,20 @@ void ScoreFont::draw(SymId id, QPainter* painter, const QSizeF& mag, const QPoin
             return;
             }
 
-      QColor color(painter->pen().color());
+
+          if (!painter->isActive()) {
+               qDebug() << "Painter is not active.";
+          }
+
+      QColor color(QColor(255, 0, 0, 0));
+      qDebug() << "Original pen color:" << painter->pen().color();
+     painter->setPen(color); // Set to opaque black
+     painter->setRenderHint(QPainter::TextAntialiasing);
+     qDebug() << "New pen color:" << painter->pen().color();
+
+
+
+      //pen.setColor(Qt::black); 
 
       int pr           = painter->device()->devicePixelRatio();
       qreal pixelRatio = qreal(pr > 0 ? pr : 1);
@@ -5732,8 +5752,12 @@ void ScoreFont::draw(SymId id, QPainter* painter, const QSizeF& mag, const QPoin
       int scale16X      = lrint(worldScale * 6553.6 * mag.width() * DPI_F);
       int scale16Y      = lrint(worldScale * 6553.6 * mag.height() * DPI_F);
 
+
+
       GlyphKey gk(face, id, mag.width(), mag.height(), worldScale, color);
       GlyphPixmap* pm = cache->object(gk);
+
+     
 
       if (!pm) {
             FT_Matrix matrix {
@@ -5753,11 +5777,20 @@ void ScoreFont::draw(SymId id, QPainter* painter, const QSizeF& mag, const QPoin
             FT_BitmapGlyph gb = (FT_BitmapGlyph)glyph;
             FT_Bitmap* bm     = &gb->bitmap;
 
-            if (bm->width == 0 || bm->rows == 0) {
-                  qDebug("zero glyph, id %d", int(id));
-                  return;
-                  }
+            qDebug() << "Matrix scale:" << scale16X << scale16Y;
+     qDebug() << "Bitmap dimensions:" << bm->width << bm->rows;
+
+     if (bm->width == 0 || bm->rows == 0) {
+          qDebug("Zero-size glyph bitmap, id %d", int(id));
+          return;
+     }
+
+          qDebug() << "Creating QImage of size" << bm->width << "x" << bm->rows;
             QImage img(QSize(bm->width, bm->rows), QImage::Format_ARGB32);
+            if (img.isNull()) {
+    qDebug("Failed to create QImage");
+    return;
+}
             img.fill(Qt::transparent);
 
             for (int y = 0; y < int(bm->rows); ++y) {
@@ -5768,16 +5801,27 @@ void ScoreFont::draw(SymId id, QPainter* painter, const QSizeF& mag, const QPoin
                         color.setAlpha(val);
                         *dst++ = color.rgba();
                         }
+                         qDebug() << "Processed row" << y << "with width" << bm->width;
                   }
             pm = new GlyphPixmap;
+            if (!pm) {
+    qDebug("Failed to allocate GlyphPixmap");
+    return;
+}
             pm->pm = QPixmap::fromImage(img, Qt::NoFormatConversion);
             pm->pm.setDevicePixelRatio(worldScale);
             pm->offset = QPointF(qreal(gb->left), -qreal(gb->top)) / worldScale;
+            qDebug() << "GlyphPixmap created with offset" << pm->offset;
             if (!cache->insert(gk, pm))
                   qDebug("cannot cache glyph");
             FT_Done_Glyph(glyph);
+            qDebug("Freetype glyph resources released");
             }
+         //   painter->setPen(QPen(Qt::blue, 1));  // Correctly using 'Qt::red'
+         painter->drawRect(QRectF(pos + pm->offset, pm->pm.size())); 
       painter->drawPixmap(pos + pm->offset, pm->pm);
+
+
       }
 
 void ScoreFont::draw(SymId id, QPainter* painter, qreal mag, const QPointF& pos, int n) const
@@ -5920,6 +5964,7 @@ void ScoreFont::computeMetrics(Sym* sym, int code)
 void ScoreFont::load()
       {
       QString facePath = _fontPath + _filename;
+      qDebug("ScoreFont::load(): open <%s>", qPrintable(facePath));
       QFile f(facePath);
       if (!f.open(QIODevice::ReadOnly)) {
             qDebug("ScoreFont::load(): open failed <%s>", qPrintable(facePath));
@@ -5962,7 +6007,7 @@ void ScoreFont::load()
             if (symId == SymId::noSym) {
                   // currently, Bravura contains a bunch of entries in glyphsWithAnchors
                   // for glyph names that will not be found - flag32ndUpStraight, etc.
-                  //qDebug("ScoreFont: symId not found <%s> in <%s>", qPrintable(i), qPrintable(fi.fileName()));
+                  qDebug("ScoreFont: symId not found <%s> in <%s>", qPrintable(i), qPrintable(fi.fileName()));
                   continue;
                   }
             Sym* sym = &_symbols[int(symId)];
@@ -6208,7 +6253,7 @@ void ScoreFont::load()
       Sym* sym = &_symbols[int(SymId::space)];
       computeMetrics(sym, 32);
 
-#if 0
+#if 1
       //
       // check for missing symbols
       //

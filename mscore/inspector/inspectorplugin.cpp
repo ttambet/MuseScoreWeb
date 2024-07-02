@@ -34,7 +34,7 @@ namespace Ms {
             {
             return 20;
             }
-      bool Preferences::isThemeDark() const { return false; }
+      bool Preferences::isThemeDark() const { return true; }
       }
 
 void InspectorPlugin::initialize(QDesignerFormEditorInterface *)

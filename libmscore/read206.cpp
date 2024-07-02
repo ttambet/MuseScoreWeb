@@ -424,7 +424,7 @@ void readPageFormat(MStyle* style, XmlReader& e)
 
 void readTextStyle206(MStyle* style, XmlReader& e, std::map<QString, std::map<Sid, QVariant>>& excessStyles)
       {
-      QString family = "FreeSerif";
+      QString family = "Bravura";
       double size = 10;
       bool sizeIsSpatiumDependent = false;
       FontStyle fontStyle = FontStyle::Normal;
@@ -3639,6 +3639,7 @@ static void readStyle(MStyle* style, XmlReader& e)
 
 static bool readScore(Score* score, XmlReader& e)
       {
+            qDebug("read206.cpp: read score");
       while (e.readNextStartElement()) {
             e.setTrack(-1);
             const QStringRef& tag(e.name());

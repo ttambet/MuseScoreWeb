@@ -108,7 +108,7 @@ void StaffTypeChange::draw(QPainter* painter) const
          lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
       painter->setBrush(Qt::NoBrush);
       painter->drawRect(0, 0, w, h);
-      QFont f("FreeSans", 12.0 * _spatium * MScore::pixelRatio / SPATIUM20);
+      QFont f("Bravura", 12.0 * _spatium * MScore::pixelRatio / SPATIUM20);
       painter->setFont(f);
       painter->drawText(QRectF(0.0, 0.0, w, h), Qt::AlignCenter, QString("S"));
       }

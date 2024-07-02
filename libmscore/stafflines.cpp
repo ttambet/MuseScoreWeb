@@ -128,10 +128,27 @@ void StaffLines::layoutForWidth(qreal w)
 //---------------------------------------------------------
 
 void StaffLines::draw(QPainter* painter) const
-      {
-      painter->setPen(QPen(curColor(), lw, Qt::SolidLine, Qt::FlatCap));
-      painter->drawLines(lines);
-      }
+{
+    qDebug() << "StaffLines::draw called";
+
+    QColor color = curColor();
+    int lineWidth = lw;
+    qDebug() << "Current color:" << color << "Line width:" << lineWidth;
+
+    painter->setPen(QPen(color, lineWidth, Qt::SolidLine, Qt::FlatCap));
+
+    qDebug() << "Lines:" << lines;
+
+    if (lines.isEmpty()) {
+        qDebug() << "No lines to draw";
+        return;
+    }
+
+    painter->drawLines(lines);
+
+    qDebug() << "Staff lines drawn";
+}
+
 
 //---------------------------------------------------------
 //   y1

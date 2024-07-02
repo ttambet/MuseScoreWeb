@@ -71,8 +71,10 @@ ScoreTab::ScoreTab(QList<MasterScore*>* sl, QWidget* parent)
       layout->addWidget(tab2);
       layout->addLayout(stack);
 
-      for (MasterScore* s : *sl)
+      for (MasterScore* s : *sl) {
+            s->doLayout(); 
             insertTab(s);
+      }
 
       connect(tab, SIGNAL(currentChanged(int)), this, SLOT(setCurrent(int)));
       connect(tab2, SIGNAL(currentChanged(int)), this, SLOT(setExcerpt(int)));

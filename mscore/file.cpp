@@ -2277,6 +2277,7 @@ void importExtension(QString name)
 
 Score::FileError readScore(MasterScore* score, QString name, bool ignoreVersionError, const QByteArray* contents)
       {
+             qDebug("file.cpp: read score");
       ScoreLoad sl;
 
       QFileInfo info(name);
@@ -2349,8 +2350,10 @@ Score::FileError readScore(MasterScore* score, QString name, bool ignoreVersionE
             if (!preferences.getString(PREF_IMPORT_STYLE_STYLEFILE).isEmpty()) {
                   QFile f(preferences.getString(PREF_IMPORT_STYLE_STYLEFILE));
                   // silently ignore style file on error
-                  if (f.open(QIODevice::ReadOnly))
+                  if (f.open(QIODevice::ReadOnly)) {
+                         qDebug("unknown style");
                         score->style().load(&f);
+                        }
                   }
             else {
                   score->style().checkChordList();

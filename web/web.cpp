@@ -6,6 +6,7 @@
 #include "musescore.h"
 #include "mscore/shortcut.h"
 #include "mscore/workspace.h"
+#include <QFontDatabase>
 
 // namespace Ms {
 //     QString revision = "123456";
@@ -17,84 +18,55 @@ namespace Ms {
 
 using namespace Ms;
 
-int main2(int argc, char **argv)
-{
+bool isFontLoaded2(const QString& fontName) {
+    QFontDatabase fontDatabase;
+    if (fontDatabase.families().contains(fontName)) {
+        qDebug("Font is loaded.");
+        return true;
+    } else {
+        qDebug("Font not loaded.");
+        return false;
+    }
+}
+
+
+int main3(int argc, char **argv) {
     QApplication app(argc, argv);
     MScore::init();
     preferences.init();
-    // if (useFactorySettings)
-    //         localeName = "system";
-    //   else {
-    //         QSettings s;
-    //         localeName = s.value(PREF_UI_APP_LANGUAGE, "system").toString();
-    //         }
 
-    //   setMscoreLocale(localeName);
     MuseScore::updateUiStyleAndTheme();
     iconPath = QString(":/data/icons/");
     Shortcut::init();
     mscore = new MuseScore();
     WorkspacesManager::initCurrentWorkspace();
     gscore = new MasterScore();
-      gscore->setPaletteMode(true);
-      gscore->setMovements(new Movements());
-      gscore->setStyle(MScore::baseStyle());
-gscore->style().set(Sid::MusicalTextFont, QString("Bravura Text"));
-      ScoreFont* scoreFont = ScoreFont::fontFactory("Bravura");
-      gscore->setScoreFont(scoreFont);
-      gscore->setNoteHeadWidth(scoreFont->width(SymId::noteheadBlack, gscore->spatium()) / SPATIUM20);
+    gscore->setPaletteMode(true);
+    gscore->setMovements(new Movements());
 
-      //read languages list
-      mscore->readLanguages(mscoreGlobalShare + "locale/languages.xml");
-      QApplication::instance()->installEventFilter(mscore);
-    //   mscore->setRevision(Ms::revision);
-            mscore->readSettings();
-            QObject::connect(qApp, SIGNAL(messageReceived(const QString&)),
-               mscore, SLOT(handleMessage(const QString&)));
+    // Check if the font is loaded
+    isFontLoaded2("Bravura");
+    isFontLoaded2("MScore");
 
-            // static_cast<QtSingleApplication*>(qApp)->setActivationWindow(mscore, false);
+    // Set the musical text font
+    gscore->style().set(Sid::MusicalTextFont, QString("Bravura"));
+    gscore->setScoreFont(ScoreFont::fontFactory(gscore->styleSt(Sid::MusicalSymbolFont)));
 
-    // Score::FileError rv = Ms::readScore(score, name, false);
-    // ScoreView* currentScoreView = mscore->appendScore(score);
-    // MasterScore* score = readScore(a);
-    //               if (score) {
-    //                     setCurrentScoreView(appendScore(score));
-    //                     addRecentScore(score);
-    //                     writeSessionFile(false);
-    //                     }
-    //               }
+    // Set the note head width
+    gscore->setNoteHeadWidth(gscore->scoreFont()->width(SymId::noteheadBlack, gscore->spatium() / SPATIUM20));
+    
+    gscore->doLayout();
+    gscore->setCreated(true);
 
-    //                 startScore = ":/data/My_First_Score.mscx";
-
-    //                           MasterScore* score = mscore->readScore(startScore);
-    //                           if (startScore.startsWith(":/") && score) {
-    //                                 score->setStyle(MScore::defaultStyle());
-    //                                 score->style().checkChordList();
-    //                                 score->styleChanged();
-    //                                 score->setName(mscore->createDefaultName());
-    //                                 // TODO score->setPageFormat(*MScore::defaultStyle().pageFormat());
-    //                                 score->doLayout();
-    //                                 score->setCreated(true);
-    //                                 }
-    //                           if (score == 0) {
-    //                                 score = mscore->readScore(":/data/My_First_Score.mscx");
-    //                                 if (score) {
-    //                                       score->setStyle(MScore::defaultStyle());
-    //                                       score->style().checkChordList();
-    //                                       score->styleChanged();
-    //                                       score->setName(mscore->createDefaultName());
-    //                                       // TODO score->setPageFormat(*MScore::defaultStyle().pageFormat());
-    //                                       score->doLayout();
-    //                                       score->setCreated(true);
-    //                                       }
-    //                                 }
-    //                           if (score)
-    //                                 currentScoreView = mscore->appendScore(score);
-    //                           }
-    //                           break;
+    // Read languages list
+    mscore->readLanguages(mscoreGlobalShare + "locale/languages.xml");
+    QApplication::instance()->installEventFilter(mscore);
+    mscore->readSettings();
+    QObject::connect(qApp, SIGNAL(messageReceived(const QString&)), mscore, SLOT(handleMessage(const QString&)));
 
     ScoreEditorWindow window;
     window.show();
-    
+
     return app.exec();
 }
+

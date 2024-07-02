@@ -315,9 +315,9 @@ void MScore::init()
       //  initialize styles
       //
       _baseStyle.precomputeValues();
-      // QSettings s;
-      // QString defStyle = s.value("score/style/defaultStyleFile").toString();
-      QString defStyle = "";
+      QSettings s;
+      QString defStyle = s.value("score/style/defaultStyleFile").toString();
+      // QString defStyle = "";
       if (!(MScore::testMode || defStyle.isEmpty())) {
             QFile f(defStyle);
             if (f.open(QIODevice::ReadOnly)) {
@@ -327,8 +327,8 @@ void MScore::init()
                   }
             }
       _defaultStyle.precomputeValues();
-      // QString partStyle = s.value("score/style/partStyleFile").toString();
-      QString partStyle = "";
+      QString partStyle = s.value("score/style/partStyleFile").toString();
+      //QString partStyle = "";
       if (!(MScore::testMode || partStyle.isEmpty())) {
             QFile f(partStyle);
             if (f.open(QIODevice::ReadOnly)) {
@@ -346,8 +346,9 @@ void MScore::init()
       // do not load application specific fonts
       // for MAC, they are in Resources/fonts
       //
-#if !defined(Q_OS_MAC) && !defined(Q_OS_IOS) && defined(WEBASSEMBLY_DISABLE)
+#if !defined(Q_OS_MAC) && !defined(Q_OS_IOS)
       static const char* fonts[] = {
+            ":/fonts/musejazz/MuseJazz.otf",
             ":/fonts/musejazz/MuseJazzText.otf",
             ":/fonts/campania/Campania.otf",
             ":/fonts/FreeSans.ttf",
@@ -357,9 +358,12 @@ void MScore::init()
             ":/fonts/FreeSerifBoldItalic.ttf",
             ":/fonts/mscoreTab.ttf",
             ":/fonts/mscore-BC.ttf",
+            ":/fonts/bravura/Bravura.otf",
             ":/fonts/bravura/BravuraText.otf",
-            ":/fonts/gootville/GootvilleText.otf",
-            ":/fonts/mscore/MScoreText.ttf",
+            ":/fonts/gootville/Gootville.otf",
+            ":/fonts/gootville/GootvilleText.otf"
+          //  ":/fonts/mscore/mscore.ttf",
+          //  ":/fonts/mscore/MScoreText.ttf",
             };
 
       for (unsigned i = 0; i < sizeof(fonts)/sizeof(*fonts); ++i) {

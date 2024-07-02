@@ -1206,14 +1206,16 @@ void Harmony::draw(QPainter* painter) const
             }
       if (hasFrame()) {
             if (frameWidth().val() != 0.0) {
-                  QColor color = frameColor();
+                  //QColor color = frameColor();
+                  QColor color(QColor(0, 0, 0, 255));
                   QPen pen(color, frameWidth().val() * spatium(), Qt::SolidLine,
                      Qt::SquareCap, Qt::MiterJoin);
                   painter->setPen(pen);
                   }
             else
                   painter->setPen(Qt::NoPen);
-            QColor bg(bgColor());
+            //QColor bg(bgColor());
+            QColor bg(QColor(0, 0, 0, 255));
             painter->setBrush(bg.alpha() ? QBrush(bg) : Qt::NoBrush);
             if (circle())
                   painter->drawArc(frame, 0, 5760);
@@ -1225,7 +1227,8 @@ void Harmony::draw(QPainter* painter) const
                   }
             }
       painter->setBrush(Qt::NoBrush);
-      QColor color = textColor();
+      //QColor color = textColor();
+      QColor color(QColor(0, 0, 0, 255));
       painter->setPen(color);
       for (const TextSegment* ts : textList) {
             QFont f(ts->font);

@@ -3290,13 +3290,13 @@ System* Score::collectSystem(LayoutContext& lc)
                               if (!s->enabled())
                                     s->setEnabled(true);
                               }
-                        m->addSystemHeader(lc.firstSystem);
+                        //m->addSystemHeader(lc.firstSystem);
                         firstMeasure = false;
                         createHeader = false;
                         }
                   else {
                         if (createHeader) {
-                              m->addSystemHeader(false);
+                              //m->addSystemHeader(false);
                               createHeader = false;
                               }
                         else if (m->header())
@@ -3428,10 +3428,12 @@ System* Score::collectSystem(LayoutContext& lc)
                                     s->setEnabled(true);
                               }
                         bool firstSystem = lc.prevMeasure->sectionBreak() && _layoutMode != LayoutMode::FLOAT;
-                        if (curHeader)
-                              m->addSystemHeader(firstSystem);
-                        else
+                        if (curHeader) {
+                              //m->addSystemHeader(firstSystem);
+                        }
+                        else {
                               m->removeSystemHeader();
+                        }
                         if (curTrailer)
                               m->addSystemTrailer(m->nextMeasure());
                         else
@@ -4362,7 +4364,13 @@ void Score::doLayoutRange(const Fraction& st, const Fraction& et)
 
       LayoutContext lc;
       lc.endTick     = etick;
-      _scoreFont     = ScoreFont::fontFactory(style().value(Sid::MusicalSymbolFont).toString());
+      // Ensure you are working with a mutable reference or pointer to the style
+
+// Use the `set` method to change the musical symbol font
+      style().set(Sid::MusicalSymbolFont, "FreeSerif");
+      qDebug() << "Musical Symbol Font: " << style().value(Sid::MusicalSymbolFont).toString();
+      _scoreFont = ScoreFont::fontFactory(style().value(Sid::MusicalSymbolFont).toString());
+
       _noteHeadWidth = _scoreFont->width(SymId::noteheadBlack, spatium() / SPATIUM20);
 
       if (cmdState().layoutFlags & LayoutFlag::FIX_PITCH_VELO)
@@ -4396,7 +4404,7 @@ void Score::doLayoutRange(const Fraction& st, const Fraction& et)
             m = toMeasure(m)->mmRest();
             }
 
-//      qDebug("start <%s> tick %d, system %p", m->name(), m->tick(), m->system());
+      qDebug("start <%s> tick %d, system %p", m->name(), m->tick(), m->system());
       lc.score        = m->score();
 
       if (lineMode()) {
@@ -4438,7 +4446,7 @@ void Score::doLayoutRange(const Fraction& st, const Fraction& et)
                   }
             }
       else {
-//  qDebug("layoutAll, systems %p %d", &_systems, int(_systems.size()));
+ qDebug("layoutAll, systems %p %d", &_systems, int(_systems.size()));
             //lc.measureNo   = 0;
             //lc.tick        = 0;
             // qDeleteAll(_systems);

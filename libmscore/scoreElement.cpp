@@ -181,18 +181,56 @@ QVariant ScoreElement::propertyDefault(Pid pid, Tid tid) const
       return QVariant();
       }
 
+// Fallback values for common properties
+QMap<Pid, QVariant> defaultPropertyValues {
+    { Pid::OFFSET, QVariant(0) }, // Default offset is 0
+    { Pid::PLACEMENT, QVariant("above") } // Default placement is "above"
+};
+
+// Function to get the default fallback value for a property
+QVariant defaultFallback(Pid pid) {
+    if (defaultPropertyValues.contains(pid)) {
+        return defaultPropertyValues[pid];
+    }
+    return QVariant(); // Return an invalid QVariant if there is no predefined fallback
+}
+
+
+QVariant sophisticatedFallback(Pid pid, const QString& elementType) {
+    QVariant defaultValue;
+    switch (pid) {
+        case Pid::MIN_DISTANCE:
+            defaultValue = QVariant(1.0); // A reasonable default for minDistance
+            qDebug() << "Fallback used for minDistance in" << elementType;
+            break;
+        default:
+            defaultValue = QVariant(); // Invalid variant for undefined properties
+            qDebug() << "Fallback needed for unhandled property" << elementType;
+            break;
+    }
+    qDebug() << "Consider reviewing the style configuration for" << elementType;
+    return defaultValue;
+}
+
 //---------------------------------------------------------
 //   propertyDefault
 //---------------------------------------------------------
 
-QVariant ScoreElement::propertyDefault(Pid pid) const
-      {
-      Sid sid = getPropertyStyle(pid);
-      if (sid != Sid::NOSTYLE)
-            return styleValue(pid, sid);
-//      qDebug("<%s>(%d) not found in <%s>", propertyQmlName(pid), int(pid), name());
-      return QVariant();
-      }
+QVariant ScoreElement::propertyDefault(Pid pid) const {
+    Sid sid = getPropertyStyle(pid);
+    if (sid != Sid::NOSTYLE) {
+        QVariant value = styleValue(pid, sid);
+        if (!value.isValid()) {
+            qDebug() << "Style value for" << propertyName(pid) << "is invalid, using sophisticated fallback.";
+            return sophisticatedFallback(pid, name());  // Use contextual fallback
+        }
+        return value;
+    } else {
+        qDebug() << "<" << propertyName(pid) << "> (" << int(pid) << ") not found in <" << name() << ">, using sophisticated fallback.";
+        return sophisticatedFallback(pid, name());  // Use contextual fallback if no style is associated
+    }
+}
+
 
 //---------------------------------------------------------
 //   initElementStyle

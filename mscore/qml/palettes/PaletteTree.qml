@@ -257,7 +257,7 @@ ListView {
 
             text: model.display
 
-            width: parent.width
+            width: parent == null ? 200 : parent.width
 
             Drag.active: paletteHeaderDragArea.drag.active
             Drag.dragType: Drag.Automatic
