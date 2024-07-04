@@ -20,18 +20,19 @@ LIBS += -s USE_ZLIB=1 -s USE_FREETYPE=1 -s TOTAL_MEMORY=1024MB -s TOTAL_STACK=51
 #LIBS += --source-map-base http://localhost:8000/build.wasm/
 #LIBS += --preload-file ../applebuild/mscore.app/Contents/Resources/@/Users/matan/Documents/code/MuseScore/applebuild/share/Contents/Resources/
 
-LIBS += --preload-file /usr/local/share/mscore-3.6/locale/
-LIBS += --preload-file /usr/local/share/mscore-3.6/workspaces/
-LIBS += --preload-file /usr/local/share/mscore-3.6/styles/
-LIBS += --preload-file /usr/local/share/mscore-3.6/templates/
-LIBS += --preload-file /usr/local/share/mscore-3.6/instruments/
-LIBS += --preload-file /usr/local/share/mscore-3.6/plugins/
+# LIBS += --preload-file /usr/local/share/mscore-3.6/locale/
+# LIBS += --preload-file /usr/local/share/mscore-3.6/workspaces/
+# LIBS += --preload-file /usr/local/share/mscore-3.6/styles/
+# LIBS += --preload-file /usr/local/share/mscore-3.6/templates/
+# LIBS += --preload-file /usr/local/share/mscore-3.6/instruments/
+# LIBS += --preload-file /usr/local/share/mscore-3.6/plugins/
 
-LIBS += --preload-file /home/timo/dev/qt5/MuseScore/mscore/data/icons@/data/icons/
+LIBS += --preload-file /home/timo/dev/qt5/MuseScore/mscore/data/icons/@/data/icons/
 LIBS += --preload-file /home/timo/dev/qt5/MuseScore/fonts@/fonts/
 LIBS += --preload-file /home/timo/dev/qt5/MuseScore/share/themes@/themes/
 LIBS += --preload-file /home/timo/dev/qt5/MuseScore/mscore/data@/data/
 LIBS += --preload-file /home/timo/dev/qt5/MuseScore/Resources/styles@/styles/
+LIBS += --preload-file /home/timo/dev/qt5/MuseScore/Resources/workspaces/@/workspaces/
 
 
 # Enable verbose logging
